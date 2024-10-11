@@ -4,6 +4,10 @@ const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
 });
+// Задача 1. У консольний додаток передають через параметр пенсійний вік. Наприклад
+// node app.mjs –-pension=65
+// Потім питаємо у терміналі користувача скільки йому років (використати “readline”) і кажемо чи він є пенсіонером.
+
 //===========================================================
 
 function getRetirementAnswer(pensionerAge, userAge) {
