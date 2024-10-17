@@ -4,7 +4,10 @@ const router = Router();
 /* GET home page. */
 import TimeControllers from "../controllers/timeControllers.mjs";
 
-router.get("/", TimeControllers.renderMainPage);
+// Задача 1. Розробити додаток з такими маршрутами:
+// season повертає пору року
+// day повертає поточний день
+// time повертає час дня (ранок, обід, вечеря)
 
 router.get("/season", TimeControllers.renderSeasonPage);
 

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Add product</title>
+    </head>
+
+    <body>
+        <section>
+            <form action="/addProduct" method="post" style="display: flex;
+            flex-direction: column;
+            align-items: flex-start;">
+                <label>
+                    Назва продукту
+                    <input type="text" name="name" placeholder="Введіть назву продукту">
+                </label>
+                </br>
+                <label>
+                    Кількість продукту
+                    <input type="number" name="count" placeholder="Введіть кількість">
+                </label>
+                <label>
+                    Опис продукту
+                    <textarea style="width: 300px;" name="name" name="description" placeholder="Опис"></textarea>
+                </label>
+                <button type="submit">Додати</button>
+            </form>
+        </section>
+    </body>
+
+</html>

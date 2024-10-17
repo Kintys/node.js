@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>
+      <%= title %>
+    </title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+
+  <br>
+  <h1>
+    <%= welcomeText %>
+  </h1>
+  <hr>
+  <ul>
+    <% for(let link of links){ %>
+      <li><a href="<%= link.url %>">
+          <%= link.name %>
+        </a><br></li>
+      <% } %>
+  </ul>
+  </body>
+
+</html>
