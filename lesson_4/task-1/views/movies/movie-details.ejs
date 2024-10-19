@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel='stylesheet' href='/stylesheet/css/style.css' />
+        <title>movie details</title>
+    </head>
+
+    <body>
+        <section>
+            <div class="card">
+                <h3 class="card__title">
+                    <%=movie.title %>
+                </h3>
+                <img class="card__image" src="<%=movie.poster_path %>" alt="movie">
+                <p class="card__text">
+                    <%=movie.overview %>
+                </p>
+                <p>
+                    <%=movie.release_date %>
+                </p>
+                <% if (movie.backdrop_path) { %>
+                    <img class="card__background" src="<%=movie.backdrop_path %>" alt="Image">
+                    <% } %>
+            </div>
+
+        </section>
+    </body>
+
+</html>

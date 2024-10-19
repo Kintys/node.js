@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel='stylesheet' href='/stylesheet/css/style.css' />
+        <title>
+            movie
+        </title>
+    </head>
+
+    <body>
+        <ul class="list">
+            <% for(const movie of movies){ %>
+                <li class="list__items">
+                    <div class="list__item">
+                        <a class="list__link" href="movie/<%=movie.id %>">
+                            <h3>
+                                <%=movie.title %>
+                            </h3>
+                            <img style="width: 100px;" src="<%=movie.poster_path  %>" alt="Image">
+                            <p>
+                                <%=movie.overview %>
+                            </p>
+                        </a>
+                        <div>
+                            <a href="/movie/add">
+                                <button>add</button>
+                            </a>
+                            <a href="/movie/update/<%=movie.id  %>">
+                                <button>edit</button>
+                            </a>
+                            <a href="/movie/delete/<%=movie.id  %>">
+                                <button>delete</button>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <% } %>
+        </ul>
+    </body>
+
+</html>

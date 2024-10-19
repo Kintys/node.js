@@ -1,0 +1,71 @@
+body {
+  padding: 50px;
+  font:
+    14px "Lucida Grande",
+    Helvetica,
+    Arial,
+    sans-serif;
+}
+
+a {
+  color: #00b7ff;
+}
+.list {
+  background: #0000006c;
+  display: grid;
+  grid-template-columns: repeat(6, auto);
+  gap: 10px;
+}
+
+.list__item {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.card {
+  background-color: #071e3947;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+  max-width: 600px;
+  min-height: 500px;
+  color: #b300ff;
+}
+.card__text {
+  max-width: 300px;
+}
+.card__image {
+  width: 200px;
+  height: 200px;
+}
+.card__background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  filter: blur(1);
+  z-index: -1;
+}
+.add-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  text-transform: capitalize;
+}
+
+.add-form__label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.add-form__input {
+}
+
+.add-form__textarea {
+  max-width: 300px;
+}

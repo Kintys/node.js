@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel='stylesheet' href='/stylesheet/css/style.css' />
+        <title>Document</title>
+    </head>
+
+    <body>
+        <form class="add-form" action="/movie/update/<%=movie.id  %>" method="post" enctype="multipart/form-data">
+            <label class="add-form__label">
+                film title
+                <input class="add-form__input" type="text" name="title" value="<%=movie.title  %>" />
+            </label>
+            <label class="add-form__label">
+                data release
+                <input class="add-form__input" type="text" name="data" value="<%=movie.release_date  %>" />
+            </label>
+            <label class="add-form__label">
+                photo
+                <input class="add-form__input" type="file" name="img" value="<%=movie.poster_path  %>">
+            </label>
+            description
+            <textarea class="add-form__textarea" name="description" cols="30" rows="10"><%=movie.overview  %></textarea>
+            <button type="submit">Edit</button>
+        </form>
+    </body>
+
+</html>

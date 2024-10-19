@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link rel='stylesheet' href='/stylesheet/css/style.css' />
+    </head>
+
+    <body>
+        <form class="add-form" action="/movie" method="post" enctype="multipart/form-data">
+            <label class="add-form__label">
+                film title
+                <input class="add-form__input" type="text" name="title" />
+            </label>
+            <label class="add-form__label">
+                data release
+                <input class="add-form__input" type="text" name="data" />
+            </label>
+            <label class="add-form__label">
+                photo
+                <input type="file" name="img">
+            </label>
+            description
+            <textarea class="add-form__textarea" name="description" cols="30" rows="10"></textarea>
+            <button type="submit">Add</button>
+        </form>
+    </body>
+
+</html>
