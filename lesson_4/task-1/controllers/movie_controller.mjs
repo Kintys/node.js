@@ -60,9 +60,9 @@ class MovieControllers {
     }
 
     static deleteMovieFromList(req, res) {
-        const id = req.params.id;
+        const id = req.body.id;
         MoviesModule.deleteMovieById(id);
-        res.redirect("/movie");
+        res.status(200).send("ok");
     }
 }
 export default MovieControllers;

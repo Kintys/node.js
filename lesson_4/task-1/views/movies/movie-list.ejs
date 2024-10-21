@@ -31,14 +31,13 @@
                             <a href="/movie/update/<%=movie.id  %>">
                                 <button>edit</button>
                             </a>
-                            <a href="/movie/delete/<%=movie.id  %>">
-                                <button>delete</button>
-                            </a>
+                            <button onclick="deleteMovie(<%=movie.id  %>)">delete</button>
                         </div>
                     </div>
                 </li>
                 <% } %>
         </ul>
     </body>
+    <script src="/javascripts/delete.js"></script>
 
 </html>

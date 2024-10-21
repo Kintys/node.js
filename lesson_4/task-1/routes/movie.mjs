@@ -13,10 +13,9 @@ router.get("/update/:id", MovieControllers.updateForm);
 
 router.get("/:id", MovieControllers.getMovieDetails);
 
-router.get("/delete/:id", MovieControllers.deleteMovieFromList);
-
 router.post("/", upload.single("img"), MovieControllers.addMovieToList);
 
 router.post("/update/:id", upload.single("img"), MovieControllers.updateMovie);
 
+router.delete("/delete", MovieControllers.deleteMovieFromList);
 export default router;
