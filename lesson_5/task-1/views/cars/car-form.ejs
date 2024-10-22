@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <script src="/javascripts/preview.js"></script>
+    </head>
+
+    <body>
+        <form action="/cars<%= car ? '/' + car.id : '' %>" enctype="multipart/form-data" method="post">
+            <label>
+                Car name
+                <input type="text" name="name" value="<%= car ? car.name : '' %>" required />
+            </label>
+            <hr />
+            <label>
+                Car Brand
+                <input type="text" name="brand" value="<%= car ? car.brand : '' %>" required />
+            </label>
+            <hr />
+            <label>
+                Data realize
+                <input type="text" name="dataRealise" value="<%= car ? car.dataRealise : '' %>" required />
+            </label>
+            <div class="prod-container">
+                <label>
+                    Image <input id="carImg" type="file" name="img" accept="image/*" />
+                </label>
+                <img id="imgPreview" alt="Car Image Preview" src="<%= car && car.img ? car.img : '/preview-img.png' %>" />
+            </div>
+            <hr />
+            <button type="submit">
+                <%= car ? 'Update' : 'add' %>
+            </button>
+        </form>
+    </body>
+
+</html>

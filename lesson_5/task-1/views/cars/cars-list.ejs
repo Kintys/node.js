@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Cars</title>
+
+    </head>
+
+    <body>
+        <section>
+            <a href="cars/add"><button>add</button></a>
+            <ul>
+                <% for(let car of cars){ %>
+                    <li>
+                        <a href="cars/<%=car.id  %>">
+                            <h4 class="title">
+                                <%=car.name %>
+                            </h4>
+                            <img style="width: 100px;" src="<%=car.img  %>" alt="Image">
+                            <p>
+                                <%=car.brand %>
+                            </p>
+                            <p>
+                                <%=car.dataRealise %>
+                            </p>
+                        </a>
+                        <a href="cars/edit/<%=car.id  %>"><button>Edit</button></a>
+                        <button data-delete="<%=car.id  %>">delete</button>
+                    </li>
+                    <% } %>
+            </ul>
+        </section>
+        <script src="/javascripts/delete.js"></script>
+    </body>
+
+
+</html>
