@@ -1,0 +1,19 @@
+.welcome {
+    // .welcome__container
+
+    &__container {
+        padding-top: 100px;
+    }
+
+    // .welcome__link
+    &__title {
+        font-size: 44px;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    &__link {
+        padding: 2px;
+        display: inline-block;
+    }
+}

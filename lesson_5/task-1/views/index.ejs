@@ -9,12 +9,18 @@
   </head>
 
   <body>
-    <h1>Вітаю на нашому сайті!</h1>
-    <hr>
-    <nav>
-      <a href="/cars">Перейти до списку наших автомобілів</a>
-    </nav>
-    <br>
+    <%- include('section/header') %>
+
+      <main>
+        <div class="wrapper">
+          <section class="welcome">
+            <div class="welcome__container">
+              <h1 class="welcome__title">Вітаю на нашому сайті!</h1>
+              <a class="welcome__link" href="/cars"><button class="button">Перейти до списку наших автомобілів</button></a>
+            </div>
+          </section>
+        </div>
+      </main>
   </body>
 
 

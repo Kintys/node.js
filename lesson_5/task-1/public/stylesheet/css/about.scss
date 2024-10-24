@@ -1,0 +1,25 @@
+.about-us {
+    // .about-us__container
+
+    &__container {
+        text-align: center;
+    }
+
+    // .about-us__title
+
+    &__title {
+        font-size: 28px;
+        &:not(:last-child) {
+            margin-bottom: 30px;
+        }
+    }
+
+    // .about-us__text
+
+    &__text {
+        letter-spacing: 1.3px;
+        &:not(:last-child) {
+            margin-bottom: 10px;
+        }
+    }
+}

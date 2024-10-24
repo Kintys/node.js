@@ -1,0 +1,10 @@
+{
+    "version": 3,
+    "sources": [
+        "welcome.scss",
+        "welcome.css"
+    ],
+    "names": [],
+    "mappings": "AAGI;EACI,kBAAA;ACFR;ADMI;EACI,eAAA;EACA,gBAAA;EACA,mBAAA;ACJR;ADOI;EACI,YAAA;EACA,qBAAA;ACLR",
+    "file": "welcome.css"
+}

@@ -41,7 +41,7 @@ class CarControllers {
         if (req.file) {
             upgradeCarData.img = `/${req.file.filename}`;
         }
-        CarsModule.upgradeCarData(id, upgradeCarData);
+        CarsModule.updateCarsData(id, upgradeCarData);
         res.redirect("/cars");
     }
 
