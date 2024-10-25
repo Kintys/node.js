@@ -1,0 +1,30 @@
+.hover-link {
+    position: relative;
+    &:hover {
+        color: #aaa;
+        &::after,
+        &::before {
+            width: 100%;
+            left: 0;
+        }
+    }
+
+    &::after,
+    &::before {
+        content: "";
+        position: absolute;
+        top: calc(100% + 5px);
+        width: 0;
+        right: 0;
+        height: 2px;
+    }
+
+    &::before {
+        transition: width 0.2s cubic-bezier(0.29, 0.18, 0.26, 0.83);
+        background: #f44336;
+    }
+    &::after {
+        transition: width 0.4s cubic-bezier(0.51, 0.18, 0, 0.88) 0.1s;
+        background: #2196f3;
+    }
+}

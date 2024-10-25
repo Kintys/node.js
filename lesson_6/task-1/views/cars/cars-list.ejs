@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Cars</title>
+        <link rel='stylesheet' href='/stylesheet/css/style.css' />
+    </head>
+
+    <body>
+        <%- include('../section/header') %>
+            <main>
+                <section class="car-list">
+                    <div class="car-list__container">
+                        <a href="cars/add" class="car-list__add"><button class="button">Add car</button></a>
+                        <div class="car-list__box">
+                            <ul class="car-list__list">
+                                <% for(let car of cars){ %>
+                                    <li class="car-list__item list-car">
+                                        <div class="list-car__card">
+                                            <h4 class="list-car__title">
+                                                <%=car.name %>
+                                            </h4>
+                                            <img class="list-car__img" src="<%=car.img  %>" alt="Image">
+                                            <div class="list-car__info">
+                                                <p class="list-car__brand">
+                                                    Brand: <%=car.brand %>
+                                                </p>
+                                                <p class="list-car__date">
+                                                    Date realize: <%=car.dataRealise %>
+                                                </p>
+                                            </div>
+                                            <p class="list-car__description">
+                                                <%=car.description %>
+                                            </p>
+                                            <div class="list-car__actions">
+                                                <a class="list-car__edit hover-link" href="cars/edit/<%=car.id  %> "><button>Edit</button></a>
+                                                <button data-delete="<%=car.id  %>" class="list-car__delete hover-link">Delete</button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <% } %>
+                            </ul>
+                        </div>
+                    </div>
+
+                </section>
+            </main>
+            <script src="/javascripts/delete.js"></script>
+    </body>
+
+
+</html>
