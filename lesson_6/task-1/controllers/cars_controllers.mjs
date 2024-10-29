@@ -1,11 +1,11 @@
 import CarsModule from "../modules/CarsModules.mjs";
+import { validationResult } from "express-validator";
 class CarControllers {
     static renderCarsList(req, res) {
         const carsData = CarsModule.loadCarsList();
-        res.status(200).json(JSON.stringify(carsData))
-        // res.render("cars/cars-list", {
-        //     cars: carsData,
-        // });
+        res.render("cars/cars-list", {
+            cars: carsData,
+        });
     }
     static showCarPage(req, res) {
         const id = CarControllers.getId(req);
@@ -17,6 +17,7 @@ class CarControllers {
     static createCarForm(req, res) {
         res.render("cars/car-form", {
             car: null,
+            errors: [],
         });
     }
     static createEditForm(req, res) {
@@ -24,25 +25,30 @@ class CarControllers {
         const car = CarsModule.getCarsById(id);
         res.render("cars/car-form", {
             car,
+            errors: [],
         });
     }
-    static addNewCar(req, res) {
-        const imgUrl = `/${req.file.filename}` ?? "";
-        const newCarData = {
-            ...req.body,
-            img: imgUrl,
-        };
-        CarsModule.addNewCarsToList(newCarData);
-        res.redirect("/cars");
-    }
 
-    static updateCar(req, res) {
-        const upgradeCarData = req.body;
+    static addOrUpdateCar(req, res) {
+        const errors = validationResult(req);
+
+        const carData = req.body;
         const id = CarControllers.getId(req);
+
         if (req.file) {
-            upgradeCarData.img = `/${req.file.filename}`;
+            carData.img = `/${req.file?.filename}`;
         }
-        CarsModule.updateCarsData(id, upgradeCarData);
+        if (!errors.isEmpty()) {
+            return res.render("cars/car-form", {
+                errors: errors.array(),
+                car: carData,
+            });
+        }
+        if (id) {
+            CarsModule.updateCarsData(id, carData);
+        } else {
+            CarsModule.addNewCarsToList(carData);
+        }
         res.redirect("/cars");
     }
 

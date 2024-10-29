@@ -7,7 +7,6 @@ import indexRouter from "./routes/index.mjs";
 import usersRouter from "./routes/users.mjs";
 import carsRouter from "./routes/cars.mjs";
 import bodyParser from "body-parser";
-import cors from'cors'
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -15,7 +14,6 @@ const __dirname = path.dirname(__filename);
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
-app.use(cors())
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

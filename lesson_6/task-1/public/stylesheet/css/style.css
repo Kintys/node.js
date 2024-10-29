@@ -234,6 +234,15 @@ body {
 .form__arrow:not(:last-child) {
   margin-bottom: 20px;
 }
+.form__errors-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.form__err {
+  color: red;
+  margin-bottom: 10px;
+}
 .form__body {
   display: flex;
   flex-direction: column;
