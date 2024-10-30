@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Register page</title>
+        <link rel="stylesheet" href="/stylesheets/style.css" />
+    </head>
+
+    <body>
+
+        <hr />
+        <% if (errors?.length> 0) { %>
+            <ul>
+                <% errors.forEach(function(error) { %>
+                    <li>
+                        <%= error.msg %>
+                    </li>
+                    <% }) %>
+            </ul>
+            <hr />
+            <% } %>
+                <form action="/users/register<%= data?.id ? '/' + data.id : '' %>" method="post">
+                    <input type="text" name="name" placeholder="Name" value="<%= data ? data.name : '' %>" />
+                    <input type="number" name="age" placeholder="age" value="<%= data ? data.age : '' %>" />
+                    <input type="email" name="email" placeholder="Email" value="<%= data ? data.email : '' %>" />
+                    <input type="password" name="password" placeholder="Password" value="<%= data ? data.password : '' %>" />
+                    <button type="submit">Register</button>
+                </form>
+    </body>
+
+</html>

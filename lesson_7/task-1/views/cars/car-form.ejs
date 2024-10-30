@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Form</title>
+        <script src="/javascripts/preview.js"></script>
+        <link rel='stylesheet' href='/stylesheet/css/style.css' />
+    </head>
+
+    <body>
+        <%- include('../section/header') %>
+            <main>
+                <section class="form">
+                    <div class="form__container">
+                        <a class="form__arrow" href="/cars"><button class="button"><span>Back</span> &larr;</button></a>
+                        <% if ( errors.length> 0) { %>
+                            <ul class="form__errors-list">
+                                <% for(let err of errors) {%>
+                                    <li class="form__err">
+                                        <%=err.msg %>
+                                    </li>
+                                    <% } %>
+                            </ul>
+                            <% } %>
+                                <form action="/cars<%= car ? '/' + car.id : '' %>" enctype="multipart/form-data" method="post">
+                                    <div class="form__body">
+                                        <label class="form__lable">
+                                            Car name
+                                            <input class="form__input" type="text" name="name" value="<%= car ? car.name : '' %>" />
+                                        </label>
+                                        <label class="form__lable">
+                                            Car price
+                                            <input class="form__input" type="text" name="price" value="<%= car ? car.price : '' %>" />
+                                        </label>
+                                        <label class="form__lable">
+                                            Data realize
+                                            <input class="form__input" type="text" name="dataRelease" value="<%= car ? car.dataRelease : '' %>" />
+                                        </label>
+                                        <label class="form__lable">
+                                            Description
+                                            <textarea class="form__textarea" name="description"> <%= car ? car.description : '' %></textarea>
+                                        </label>
+                                        <div class="form__prod-box">
+                                            <label class="form__lable">
+                                                Image <input class="form__file" id="carImg" type="file" name="img" accept="image/*" />
+                                            </label>
+                                            <img class="form__pre-img" id="imgPreview" alt="Car Image Preview" src="<%= car && car.img ? car.img : '/preview-img.png' %>" />
+                                        </div>
+                                        <button class="form__button button" type="submit">
+                                            <%= car && car.id ? 'Update' : 'Add New Car' %>
+                                        </button>
+                                    </div>
+                                </form>
+                    </div>
+
+                </section>
+            </main>
+    </body>
+
+</html>

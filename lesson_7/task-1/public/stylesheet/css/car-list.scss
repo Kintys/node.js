@@ -1,0 +1,76 @@
+.car-list {
+    padding-top: 50px;
+    // .car-list__container
+
+    &__container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    // .car-list__add
+
+    &__add {
+        padding-left: 30px;
+        &:not(:last-child) {
+            margin-bottom: 50px;
+        }
+    }
+}
+.list-car {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-content: center;
+    padding: 10px;
+    border-radius: 10px;
+    transition: all 0.3s;
+    &:not(:last-child) {
+        margin-bottom: 50px;
+    }
+    &:hover {
+        background: #131313;
+        box-shadow: 0px toRem(17) toRem(27) 0px #000;
+    }
+    &:not(:last-child) {
+        margin-bottom: 30px;
+    }
+    // .list-car__card
+
+    &__card {
+        width: 100%;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        gap: 30px;
+    }
+
+    // .list-car__title
+
+    &__title {
+        font-size: 28px;
+        text-transform: capitalize;
+        font-family: "Audiowide", sans-serif;
+    }
+
+    // .list-car__img
+
+    &__img {
+        max-width: 200px;
+        aspect-ratio: 4/3;
+    }
+    &__info {
+        display: flex;
+        flex-direction: column;
+        text-transform: capitalize;
+        row-gap: 30px;
+    }
+
+    &__description {
+        max-width: 400px;
+    }
+
+    &__actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+}
