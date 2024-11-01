@@ -11,9 +11,8 @@ router.get("/", CarsControllers.renderCarsList);
 router.get("/add", CarsControllers.createCarForm);
 router.get("/edit/:id", CarsControllers.createEditForm);
 
-router.get("/:id", CarsControllers.showCarPage);
-
 router.post("/:id", upload.single("img"), checkSchema(CarsValidator.carsSchema), CarsControllers.addOrUpdateCar);
+
 router.post("/", upload.single("img"), checkSchema(CarsValidator.carsSchema), CarsControllers.addOrUpdateCar);
 
 router.delete("/delete", CarsControllers.deleteCar);

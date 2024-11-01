@@ -44,7 +44,6 @@ carSchema.statics.checkDatabaseExists = async function () {
 carSchema.statics.checkCollectionExists = async function () {
     if (await this.checkDatabaseExists()) {
         const collections = await mongoose.connection.db.listCollections({ name: "cars" }).toArray();
-        console.log(collections);
         return collections.length > 0;
     }
     return false;
