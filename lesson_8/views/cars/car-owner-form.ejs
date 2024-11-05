@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Form</title>
+        <link rel='stylesheet' href='/stylesheet/css/style.css' />
+    </head>
+
+    <body>
+        <%- include('../section/header') %>
+            <main>
+                <section class="form">
+                    <div class="form__container">
+                        <a class="form__arrow" href="/cars"><button class="button"><span>Back</span> &larr;</button></a>
+                        <% if ( errors.length> 0) { %>
+                            <ul class="form__errors-list">
+                                <% for(let err of errors) {%>
+                                    <li class="form__err">
+                                        <%=err.msg %>
+                                    </li>
+                                    <% } %>
+                            </ul>
+                            <% } %>
+                                <form action="add-owner" method="post">
+                                    <div class="form__body">
+                                        <label class="form__lable">
+                                            Name
+                                            <input class="form__input" type="text" name="name" />
+                                        </label>
+                                        <label class="form__lable">
+                                            Address:
+                                            <input class="form__input" type="text" name="address" />
+                                        </label>
+                                        <button class="form__button button" type="submit">
+                                            Add Owner
+                                        </button>
+                                    </div>
+                                </form>
+                    </div>
+
+                </section>
+            </main>
+    </body>
+
+</html>

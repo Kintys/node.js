@@ -1,0 +1,15 @@
+.about-us__container {
+  text-align: center;
+}
+.about-us__title {
+  font-size: 28px;
+}
+.about-us__title:not(:last-child) {
+  margin-bottom: 30px;
+}
+.about-us__text {
+  letter-spacing: 1.3px;
+}
+.about-us__text:not(:last-child) {
+  margin-bottom: 10px;
+}/*# sourceMappingURL=about.css.map */

@@ -1,0 +1,17 @@
+.button {
+    display: flex;
+    padding: 14px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-radius: 20px;
+    background: var(--Light-Yellow, #f2d027);
+    transition: background 0.3s;
+    @media (any-hover: hover) {
+        &:hover {
+            outline: 2px solid var(--Light-Yellow, #f2d027);
+            background: var(--Glass-Black, rgba(80, 80, 80, 0.5));
+            backdrop-filter: blur(5px);
+        }
+    }
+}
