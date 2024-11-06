@@ -6,12 +6,10 @@ import OwnerDBService from "../modules/owner/OwnerDBService.mjs";
 class CarControllers {
     static async renderCarsList(req, res) {
         const ownerData = await OwnerDBService.getList();
-
         const filters = {};
         for (const key in req.query) {
             if (req.query[key]) filters[key] = req.query[key];
         }
-
         const carsData = await CarsDBService.getList(filters);
         const newData = CarControllers.getNewDataWithBase64(carsData);
         res.render("cars/cars-list", {
