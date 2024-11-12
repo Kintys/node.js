@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Form</title>
+        <link rel='stylesheet' href='/stylesheet/css/style.css' />
+    </head>
+
+    <body>
+        <main>
+            <section class="form">
+                <div class="form__container">
+                    <form action="/product" enctype="multipart/form-data" method="post">
+                        <div class="form__body">
+                            <label class="form__lable">
+                                title
+                                <input class="form__input" type="text" name="title" value="" />
+                            </label>
+                            <label class="form__lable">
+                                price
+                                <input class="form__input" type="text" name="price" value="" />
+                            </label>
+                            <div class="form__prod-box">
+                                <label class="form__lable">
+                                    Image <input class="form__file" id="carImg" type="file" name="img" accept="image/*" />
+                                </label>
+                            </div>
+                            <button class="form__button button" type="submit">
+                                submit
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </body>
+
+</html>

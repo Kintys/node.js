@@ -34,7 +34,6 @@ const carSchema = new Schema({
         type: Buffer,
         required: [true, "Image is required"],
     },
-
     owner: {
         type: Schema.Types.ObjectId,
         ref: "Owner",
