@@ -23,7 +23,7 @@ class ProductController {
                 productData.img = req.file?.buffer;
             }
             await ProductsDBService.addProductItemToDB(productData);
-            res.redirect("/");
+            res.redirect("/product/list");
         } catch (err) {
             res.send("not add").status(400);
         }

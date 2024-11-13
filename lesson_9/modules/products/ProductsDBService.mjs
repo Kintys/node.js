@@ -4,8 +4,7 @@ import MongooseCRUDManager from "../MongooseCRUDManager.mjs";
 class ProductDBService extends MongooseCRUDManager {
     async getProductList(filters = {}, sortValue = {}) {
         try {
-            const result = Product.find(filters).sort(sortValue);
-            console.log(result.countDocuments);
+            const result = await Product.find(filters).sort(sortValue).exec();
             return ProductDBService.getNewDataWithBase64(result);
         } catch (error) {
             return [];
@@ -22,7 +21,7 @@ class ProductDBService extends MongooseCRUDManager {
     static getNewDataWithBase64(data) {
         return data.map((element) => {
             return {
-                ...element,
+                ...element._doc,
                 img: `data:image/gif;base64,${element.img.toString("base64")}`,
             };
         });
