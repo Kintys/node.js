@@ -1,7 +1,7 @@
 import ProductsDBService from "../modules/products/ProductsDBService.mjs";
 
 class ProductController {
-    static createProductForm(req, res) {
+    static async createProductForm(req, res) {
         res.render("product/product");
     }
     static async renderProductList(req, res) {
@@ -20,7 +20,7 @@ class ProductController {
             req.session.sort = { price: 1 };
             const productData = req.body;
             if (req.file) {
-                productData.img = req.file?.buffer;
+                productData.img = `data:image;base64,${req.file.buffer.toString("base64")}`;
             }
             await ProductsDBService.addProductItemToDB(productData);
             res.redirect("/product/list");
