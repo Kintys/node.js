@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+
+    <body>
+        <main>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi tempora voluptatum doloribus, laboriosam obcaecati pariatur nam provident veritatis atque ad necessitatibus possimus impedit perferendis doloremque, eos, voluptates blanditiis laborum quibusdam!
+            <ul>
+                <% for(let course of coursesList){ %>
+
+                    <li><span>
+                            <%=course.title %>
+                        </span>
+                        <span>
+                            <%=course.lifeTime %>
+                        </span>
+                        <div>
+                            <% for( let student of course.students ) { %>
+                                <p>
+                                    <%=student.name %>
+                                </p>
+                                <% } %>
+                        </div>
+                        <% } %>
+                    </li>
+            </ul>
+        </main>
+    </body>
+
+</html>
