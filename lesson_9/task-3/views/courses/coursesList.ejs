@@ -9,11 +9,10 @@
 
     <body>
         <main>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi tempora voluptatum doloribus, laboriosam obcaecati pariatur nam provident veritatis atque ad necessitatibus possimus impedit perferendis doloremque, eos, voluptates blanditiis laborum quibusdam!
             <ul>
                 <% for(let course of coursesList){ %>
-
-                    <li><span>
+                    <li>
+                        <span>
                             <%=course.title %>
                         </span>
                         <span>
@@ -22,12 +21,22 @@
                         <div>
                             <% for( let student of course.students ) { %>
                                 <p>
-                                    <%=student.name %>
+                                    <%=student?.name || student %>
                                 </p>
                                 <% } %>
                         </div>
-                        <% } %>
+                        <div>
+                            <% for( let seminar of course.seminars ) { %>
+                                <p>
+                                    <%=seminar?.theme || seminar %>
+                                </p>
+                                <p>
+                                    <%=seminar?.lifeTime || seminar %>
+                                </p>
+                                <% } %>
+                        </div>
                     </li>
+                    <% } %>
             </ul>
         </main>
     </body>

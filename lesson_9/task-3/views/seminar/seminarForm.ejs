@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+
+    <body>
+        <form action="/seminar" method="post">
+            <label>title
+                <input name="theme" type="text" class="input">
+            </label>
+            <label>lifeTime
+                <input name="lifeTime" type="number" class="input">
+            </label>
+            <select name="responsiblePerson">
+                <% students.forEach(student=> { %>
+                    <option value="<%= student._id%>">
+                        <%= student.name%>
+                    </option>
+                    <%})%>
+            </select>
+            <button type="submit">New Seminar</button>
+        </form>
+    </body>
+
+</html>

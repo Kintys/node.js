@@ -2,10 +2,14 @@ import MongooseCRUDManager from "../MongooseCRUDManager.mjs";
 import Courses from "./Course.mjs";
 
 class CoursesBDServices extends MongooseCRUDManager {
-    static async getCoursesList(filter) {
+    async getList(filter) {
         try {
-            const results = await super.getList(filter, null, [
-                { populateField: "students", targetFieldsForPopulate: "name" },
+            const results = await super.getList(filter || {}, null, [
+                {
+                    populateField: "students",
+                    targetFieldsForPopulate: "name",
+                },
+                "seminars",
             ]);
             return results;
         } catch (error) {
@@ -20,5 +24,5 @@ class CoursesBDServices extends MongooseCRUDManager {
     //     }
     // }
 }
-const CallClass = new CoursesBDServices(Courses);
-export default CallClass;
+// const CallClass = new CoursesBDServices(Courses);
+export default new CoursesBDServices(Courses);

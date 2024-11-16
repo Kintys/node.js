@@ -4,7 +4,6 @@ class MongooseCRUDManager {
     }
     async getList(filter = {}, project = null, populateFields = []) {
         try {
-            console.log(populateFields);
             let query = this.model.find(filter, project);
             for (const field of populateFields) {
                 if (typeof field === "string") {

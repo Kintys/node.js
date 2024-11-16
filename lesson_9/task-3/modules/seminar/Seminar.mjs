@@ -8,11 +8,11 @@
 //         trim: true,
 //     },
 //     lifeTime: {
-//         type: Date,
+//         type: Number,
 //         required: true,
 //     },
 //     responsiblePerson: {
-//         type: Schema.type.ObjectId,
+//         type: Schema.Types.ObjectId,
 //         ref: "Student",
 //     },
 // });

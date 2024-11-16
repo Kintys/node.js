@@ -16,10 +16,19 @@
                 <input name="lifeTime" type="number" class="input">
             </label>
             <label>student
-                <select name="students">
+                <select name="students" multiple>
                     <% students.forEach(student=> { %>
                         <option value="<%= student._id%>">
                             <%= student.name%>
+                        </option>
+                        <%})%>
+                </select>
+            </label>
+            <label>student
+                <select name="seminars">
+                    <% seminars.forEach(seminar=> { %>
+                        <option value="<%= seminar._id%>">
+                            <%= seminar.theme%>
                         </option>
                         <%})%>
                 </select>

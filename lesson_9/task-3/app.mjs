@@ -6,6 +6,7 @@ import { fileURLToPath } from "url";
 import indexRouter from "./routes/index.mjs";
 import studentRouter from "./routes/student.mjs";
 import coursesRouter from "./routes/courses.mjs";
+import seminarRouter from "./routes/seminar.mjs";
 import connectDB from "./db/connectDB.mjs";
 
 const app = express();
@@ -29,6 +30,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/student", studentRouter);
 app.use("/courses", coursesRouter);
+app.use("/seminar", seminarRouter);
 
 app.use((req, res, next) => {
     const err = new Error("Not Found");

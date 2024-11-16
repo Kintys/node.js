@@ -1,6 +1,21 @@
 import mongoose from "mongoose";
-// import { seminarSchema } from "../seminar/Seminar.mjs";
 const { Schema } = mongoose;
+
+export const seminarSchema = new Schema({
+    theme: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    lifeTime: {
+        type: Number,
+        required: true,
+    },
+    responsiblePerson: {
+        type: Schema.Types.ObjectId,
+        ref: "Student",
+    },
+});
 
 const coursesSchema = new Schema({
     title: {
@@ -14,12 +29,13 @@ const coursesSchema = new Schema({
         type: Number,
         required: true,
     },
-    students: {
-        type: [Schema.Types.ObjectId],
-        ref: "Student",
-        required: true,
-    },
-    // seminars: [seminarSchema],
+    students: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Student",
+        },
+    ],
+    seminars: [seminarSchema],
 });
 
 const Courses = mongoose.model("Courses", coursesSchema);

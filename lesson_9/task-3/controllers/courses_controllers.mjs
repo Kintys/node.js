@@ -1,4 +1,5 @@
 import CoursesDBServices from "../modules/course/CoursesDBServices.mjs";
+import SeminarDBServices from "../modules/seminar/SeminarDBServices.mjs";
 import StudentDBService from "../modules/student/StudentDBService.mjs";
 
 class CoursesControllers {
@@ -15,8 +16,10 @@ class CoursesControllers {
     static async createForm(req, res) {
         try {
             const students = await StudentDBService.getStudents({});
+            const seminars = await SeminarDBServices.getList({}, { responsiblePerson: 0 });
             res.render("courses/coursesForm", {
                 students,
+                seminars,
             });
         } catch (error) {
             res.send(error.message).status(401);
