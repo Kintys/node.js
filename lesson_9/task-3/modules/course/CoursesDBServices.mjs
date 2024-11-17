@@ -16,13 +16,15 @@ class CoursesBDServices extends MongooseCRUDManager {
             return error.message;
         }
     }
-    // static async createNewCourses(data){
-    //     try {
-    //         await super.create()
-    //     } catch (error) {
-
-    //     }
-    // }
+    async addNewSeminar(id, data) {
+        try {
+            const course = await super.getById(id);
+            course.seminars.push(data);
+            const res = await super.update(id, course);
+        } catch (error) {
+            return error.message;
+        }
+    }
 }
-// const CallClass = new CoursesBDServices(Courses);
+
 export default new CoursesBDServices(Courses);

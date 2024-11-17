@@ -10,16 +10,25 @@
     <body>
         <form action="/student" method="post">
             <label>Name
-                <input name="name" type="text" class="input">
+                <input name="name" type="text" class="input" value="<%=student?  student.name: '' %>">
             </label>
             <label>Age
-                <input name="age" type="number" class="input">
+                <input name="age" type="number" class="input" value="<%=student?  student.age: '' %>">
             </label>
             <label>Average Mark
-                <input name="averageMark" type="number" class="input">
+                <input name="averageMark" type="number" class="input" value="<%=student?  student.averageMark: '' %>">
             </label>
             <button type="submit">New Student</button>
         </form>
+        <% if(errors) {%>
+            <ul>
+                <% for(let error of errors){ %>
+                    <li>
+                        <%=error.msg %>
+                    </li>
+                    <% } %>
+            </ul>
+            <% } %>
     </body>
 
 </html>

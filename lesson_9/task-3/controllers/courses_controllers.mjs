@@ -1,7 +1,6 @@
 import CoursesDBServices from "../modules/course/CoursesDBServices.mjs";
-import SeminarDBServices from "../modules/seminar/SeminarDBServices.mjs";
 import StudentDBService from "../modules/student/StudentDBService.mjs";
-
+import { validationResult } from "express-validator";
 class CoursesControllers {
     static async renderCoursesList(req, res) {
         try {
@@ -16,18 +15,28 @@ class CoursesControllers {
     static async createForm(req, res) {
         try {
             const students = await StudentDBService.getStudents({});
-            const seminars = await SeminarDBServices.getList({}, { responsiblePerson: 0 });
             res.render("courses/coursesForm", {
                 students,
-                seminars,
+                errors: [],
+                course: null,
             });
         } catch (error) {
             res.send(error.message).status(401);
         }
     }
     static async registerCourse(req, res) {
+        const errors = validationResult(req);
         try {
+            const students = await StudentDBService.getStudents({});
             const newData = req.body;
+            if (!errors.isEmpty()) {
+                res.render("courses/coursesForm", {
+                    students,
+                    errors: errors.array(),
+                    course: newData,
+                });
+                return;
+            }
             await CoursesDBServices.create(newData);
             res.redirect("/");
         } catch (error) {

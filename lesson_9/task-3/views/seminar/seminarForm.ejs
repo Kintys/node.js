@@ -8,22 +8,33 @@
     </head>
 
     <body>
-        <form action="/seminar" method="post">
+        <form action="/seminar/<%=courseId %>" method="post">
             <label>title
-                <input name="theme" type="text" class="input">
+                <input name="theme" type="text" class="input" value="<%=seminar ? seminar.theme:""  %>">
             </label>
             <label>lifeTime
-                <input name="lifeTime" type="number" class="input">
+                <input name="lifeTime" type="number" class="input" value="<%=seminar ? seminar.lifeTime :"" %>">
             </label>
-            <select name="responsiblePerson">
+            <select name="student">
                 <% students.forEach(student=> { %>
-                    <option value="<%= student._id%>">
+                    <option value="<%= student._id%>" <%=seminar && seminar.student===student.id ? 'selected' : '' %>
+                        >
                         <%= student.name%>
                     </option>
                     <%})%>
             </select>
+            <textarea name="description" cols="30" rows="10"><%=seminar ? seminar.description:'' %></textarea>
             <button type="submit">New Seminar</button>
         </form>
+        <% if(errors) {%>
+            <ul>
+                <% for(let error of errors){ %>
+                    <li>
+                        <%=error.msg %>
+                    </li>
+                    <% } %>
+            </ul>
+            <% } %>
     </body>
 
 </html>

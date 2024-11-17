@@ -8,33 +8,45 @@
     </head>
 
     <body>
+        <script>
+            window.addEventListener('load', () => {
+                const selectEl = document.querySelector('select[data-selected]')
+                const data = selectEl?.getAttribute("data-selected").split(',');
+                if (Array.isArray(data)) {
+                    for (const opt of selectEl.options) {
+                        if (data.find((id) => id === opt.value)) opt.selected = true
+                    }
+                }
+            }
+            )
+        </script>
         <form action="/courses/form" method="post">
             <label>title
-                <input name="title" type="text" class="input">
+                <input name="title" type="text" class="input" value="<%= course ? course.title : ''  %>">
             </label>
             <label>lifeTime
-                <input name="lifeTime" type="number" class="input">
+                <input name="lifeTime" type="number" class="input" value="<%= course ? course.lifeTime : ''  %>">
             </label>
             <label>student
-                <select name="students" multiple>
-                    <% students.forEach(student=> { %>
-                        <option value="<%= student._id%>">
+                <select name="students" multiple data-selected="<%=course?.students %>">
+                    <% students?.forEach(student=> { %>
+                        <option value="<%=student._id%>">
                             <%= student.name%>
-                        </option>
-                        <%})%>
-                </select>
-            </label>
-            <label>student
-                <select name="seminars">
-                    <% seminars.forEach(seminar=> { %>
-                        <option value="<%= seminar._id%>">
-                            <%= seminar.theme%>
                         </option>
                         <%})%>
                 </select>
             </label>
             <button type="submit">New course</button>
         </form>
+        <% if(errors) {%>
+            <ul>
+                <% for(let error of errors){ %>
+                    <li>
+                        <%=error.msg %>
+                    </li>
+                    <% } %>
+            </ul>
+            <% } %>
     </body>
 
 </html>

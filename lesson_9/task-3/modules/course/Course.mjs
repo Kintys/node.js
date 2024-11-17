@@ -11,6 +11,10 @@ export const seminarSchema = new Schema({
         type: Number,
         required: true,
     },
+    description: {
+        type: String,
+        trim: true,
+    },
     responsiblePerson: {
         type: Schema.Types.ObjectId,
         ref: "Student",
@@ -37,6 +41,6 @@ const coursesSchema = new Schema({
     ],
     seminars: [seminarSchema],
 });
-
 const Courses = mongoose.model("Courses", coursesSchema);
+
 export default Courses;

@@ -26,6 +26,24 @@ class MongooseCRUDManager {
             throw new Error("Error creating data: " + error.message);
         }
     }
+    async getById(id, populateFields = []) {
+        try {
+            let query = this.model.findById(id);
+            populateFields.forEach((field) => {
+                query = query.populate(field);
+            });
+            return await query.exec();
+        } catch (error) {
+            throw new Error("Error finding data by id: " + error.message);
+        }
+    }
+    async update(id, data) {
+        try {
+            return await this.model.findByIdAndUpdate(id, data, { new: true, runValidators: true }).exec();
+        } catch (error) {
+            throw new Error("Error updating data: " + error.message);
+        }
+    }
 }
 
 export default MongooseCRUDManager;
