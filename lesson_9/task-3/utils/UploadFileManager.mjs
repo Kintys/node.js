@@ -1,8 +1,17 @@
 import multer from "multer";
-import { v4 as uuidv4 } from "uuid";
 
 const storage = multer.memoryStorage();
 
-const upload = multer({ storage });
+const upload = multer({
+    storage: storage,
+    limits: { fileSize: 10 * 1024 * 1024 },
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype.startsWith("image/")) {
+            cb(null, true);
+        } else {
+            cb(new Error("Not an image! Please upload an image."), false);
+        }
+    },
+});
 
 export default upload;
