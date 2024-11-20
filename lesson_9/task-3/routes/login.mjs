@@ -1,5 +1,4 @@
 import express from "express";
-import AuthController from "../controllers/authController.mjs";
 import passport from "passport";
 const router = express.Router();
 
@@ -13,8 +12,8 @@ router.post(
         next();
     },
     passport.authenticate("local", {
-        // successRedirect: '/users',
-        failureRedirect: "/courses",
+        successRedirect: "/",
+        failureRedirect: "/login",
         // failureRedirect: '/',
         // failureFlash: true,
     })

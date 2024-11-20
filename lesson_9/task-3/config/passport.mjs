@@ -7,7 +7,7 @@ import UsersDBService from "../modules/user/UsersDBService.mjs";
 passport.use(
     new LocalStrategy(async (username, password, done) => {
         try {
-            const user = await UsersDBService.findOne({ username }, {}, ["type"]);
+            const user = await UsersDBService.findOne({ username }, {}, []);
             if (!user) {
                 return done(null, false, { message: "Incorrect name." });
             }
@@ -29,7 +29,8 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser(async (id, done) => {
     try {
         // const user = await User.findById(id)
-        const user = await UsersDBService.findOne({ _id: id }, {}, ["type"]);
+        const user = await UsersDBService.findOne({ _id: id }, {}, []);
+        console.log(user);
         done(null, user);
     } catch (error) {
         done(error);

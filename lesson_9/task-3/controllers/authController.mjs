@@ -1,13 +1,14 @@
 import passport from "passport";
 
 class AuthController {
-    static login(req, res) {
-        passport.authenticate("local", {
-            successRedirect: "/courses",
-            successMessage: "ok",
-            failureRedirect: "/",
-            failureMessage: "Not Found",
-        });
+    static async login(req, res) {
+        try {
+            passport.authenticate("local", {
+                // successRedirect: "/courses",
+                failureRedirect: "/",
+            });
+        } catch (error) {}
+        return;
     }
 
     static logout(req, res) {

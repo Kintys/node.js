@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Register page</title>
-        <link rel="stylesheet" href="/stylesheets/style.css" />
-    </head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register page</title>
+  </head>
 
-    <body>
+  <body>
+    <hr />
 
-        <hr />
+    <!-- enctype="multipart/form-data" -->
+    <form action="/register" method="post">
+      <input type="text" name="username" placeholder="Name" value="" />
+      <input type="email" name="email" placeholder="Email" value="" />
+      <input type="password" name="password" placeholder="Password" value="" />
 
-        <form action="/users/login" method="post">
-            <input type="text" name="name" placeholder="Name" value="" />
-            <input type="password" name="password" placeholder="Password" value="" />
-            <button type="submit">Register</button>
-        </form>
-    </body>
+      </div>
+      <button type="submit">Register</button>
+    </form>
+  </body>
 
 </html>
