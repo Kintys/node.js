@@ -1,11 +1,11 @@
 import Cars from "./Cars.mjs";
 
 class CarsDBService {
-    static async getList(filters) {
+    static async getList(filters, sort) {
         try {
             const exists = await Cars.checkCollectionExists();
             if (exists) {
-                return await Cars.find(filters).populate("owner").exec();
+                return await Cars.find(filters).sort().populate("owner").exec();
             }
             return [];
         } catch (error) {

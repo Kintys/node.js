@@ -83,7 +83,7 @@ body {
   min-width: 0;
 }
 
-[class*=__container] {
+[class*="__container"] {
   max-width: 75rem;
   margin: 0 auto;
   padding: 0 0.9375rem;
@@ -95,11 +95,13 @@ body {
 .hover-link:hover {
   color: #aaa;
 }
-.hover-link:hover::after, .hover-link:hover::before {
+.hover-link:hover::after,
+.hover-link:hover::before {
   width: 100%;
   left: 0;
 }
-.hover-link::after, .hover-link::before {
+.hover-link::after,
+.hover-link::before {
   content: "";
   position: absolute;
   top: calc(100% + 5px);
@@ -126,7 +128,7 @@ body {
 .header__nav {
   display: flex;
   -moz-column-gap: 10px;
-       column-gap: 10px;
+  column-gap: 10px;
 }
 
 .button {
@@ -144,7 +146,7 @@ body {
     outline: 2px solid var(--Light-Yellow, #f2d027);
     background: var(--Glass-Black, rgba(80, 80, 80, 0.5));
     -webkit-backdrop-filter: blur(5px);
-            backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
   }
 }
 
@@ -298,4 +300,9 @@ body {
 }
 .about-us__text:not(:last-child) {
   margin-bottom: 10px;
-}/*# sourceMappingURL=style.css.map */
+} /*# sourceMappingURL=style.css.map */
+.car-list__body {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 50px;
+}

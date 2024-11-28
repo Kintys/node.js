@@ -14,7 +14,7 @@
                 const data = selectEl?.getAttribute("data-selected").split(',');
                 if (Array.isArray(data)) {
                     for (const opt of selectEl.options) {
-                        if (data.find((id) => id === opt.value)) opt.selected = true
+                        if (data.includes(opt.value)) opt.selected = true
                     }
                 }
             }

@@ -17,70 +17,69 @@
                             <a href="cars/add" class="car-list__add"><button class="button">Add car</button></a>
                             <a href='cars/owner'><button class="button">&#43;<span>Add New Owner</span></button></a>
                         </div>
-                        <div class="car-list__box">
-                            <form action="/cars" method="get" class="filter">
-                                <label class="ffilter__lable">
-                                    Car name
-                                    <input class="filter__input" type="text" name="name" value="" />
-                                </label>
-                                <label class="filter__lable">
-                                    Car price
-                                    <input class="filter__input" type="number" name="price" value="" />
-                                </label>
-                                <label class="filter__lable">
-                                    Data
-                                    <input class="filter__input" type="text" name="dataRelease" value="" />
-                                </label>
-                                <select name="owner">
-                                    <option value="">
-                                    </option>
-                                    <% for (let owner of ownerList) {%>
-                                        <option value="<%= owner._id%>">
-                                            <%= owner.name%>
-                                        </option>
-                                        <% } %>
-                                </select>
-                                <button class="button" type="submit">Filtered</button>
-                                <a href="#"> <button class="button">Clear filter</button></a>
-                        </div>
-                        <ul class="car-list__list">
-                            <% for(let car of cars){ %>
-                                <li class="car-list__item list-car">
-                                    <div class="list-car__card">
-                                        <h4 class="list-car__title">
-                                            <%=car.name %>
-                                        </h4>
-                                        <img class="list-car__img" src="data:image/gif;base64<%=car.img  %>" alt="Image">
-                                        <div class="list-car__info">
-                                            <p class="list-car__brand">
-                                                Price: <%=car.price %> $
-                                            </p>
-                                            <p class="list-car__date">
-                                                Date realize: <%=car.dataRelease %>
-                                            </p>
-
-                                            <% if (car && car.owner) { %>
-                                                <span>
-                                                    <%= car.owner.name %>
-                                                </span>
-                                                <span>
-                                                    <%= car.owner.address %>
-                                                </span>
-                                                <% } %>
-                                        </div>
-                                        <p class="list-car__description">
-                                            <%=car.description %>
-                                        </p>
-                                        <div class="list-car__actions">
-                                            <a class="list-car__edit hover-link" href="cars/edit/<%=car._id  %> ">
-                                                <button>Edit</button>
-                                            </a>
-                                            <button data-delete="<%=car._id  %>" class="list-car__delete hover-link">Delete</button>
-                                        </div>
+                        <div class="car-list__body">
+                            <div class="car-list__box">
+                                <form action="/cars" method="get" class="filter">
+                                    <select name="sort">
+                                        <option value="asc">За зростанням ціни</option>
+                                        <option value="desc">За спаданням ціни</option>
+                                    </select>
+                                    <label class="ffilter__lable">
+                                        Car name
+                                        <input class="filter__input" type="text" name="name" value="" />
+                                    </label>
+                                    <label class="filter__lable">
+                                        Car price
+                                        <input class="filter__input" type="number" name="price" value="" />
+                                    </label>
+                                    <label class="filter__lable">
+                                        Data
+                                        <input class="filter__input" type="text" name="dataRelease" value="" />
+                                    </label>
+                                    <div class="filter__actions">
+                                        <button class="button" type="submit">Filtered</button>
+                                        <a href="#"> <button class="button">Clear filter</button></a>
                                     </div>
-                                </li>
-                                <% } %>
-                        </ul>
+
+                                </form>
+                            </div>
+                            <ul class="car-list__list">
+                                <% for(let car of cars){ %>
+                                    <li class="car-list__item list-car">
+                                        <div class="list-car__card">
+                                            <h4 class="list-car__title">
+                                                <%=car.name %>
+                                            </h4>
+                                            <img class="list-car__img" src="data:image/gif;base64<%=car.img  %>" alt="Image">
+                                            <div class="list-car__info">
+                                                <p class="list-car__brand">
+                                                    Price: <%=car.price %> $
+                                                </p>
+                                                <p class="list-car__date">
+                                                    Date realize: <%=car.dataRelease %>
+                                                </p>
+
+                                                <% if (car && car.owner) { %>
+                                                    <span>
+                                                        <%= car.owner.name %>
+                                                    </span>
+                                                    <span>
+                                                        <%= car.owner.address %>
+                                                    </span>
+                                                    <% } %>
+                                            </div>
+                                            <p class="list-car__description">
+                                                <%=car.description %>
+                                            </p>
+                                            <div class="list-car__actions">
+                                                <a href="/cars/edit/<%=car._id  %>">Edit</a>
+                                                <!-- <button data-delete="<%=car._id  %>" class="list-car__delete hover-link">Delete</button> -->
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <% } %>
+                            </ul>
+                        </div>
                     </div>
                     </div>
 

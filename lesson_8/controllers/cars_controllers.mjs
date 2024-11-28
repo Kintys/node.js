@@ -7,10 +7,16 @@ class CarControllers {
     static async renderCarsList(req, res) {
         const ownerData = await OwnerDBService.getList();
         const filters = {};
+        let sortQuery = {};
         for (const key in req.query) {
-            if (req.query[key]) filters[key] = req.query[key];
+            if (req.query[key] && !req.query.sort) filters[key] = req.query[key];
+            if (req.query.sort) {
+                sortQuery = req.query.sort;
+                const [field, order] = sortQuery.split(":");
+                sortOptions[field] = order === "asc" ? 1 : -1;
+            }
         }
-        const carsData = await CarsDBService.getList(filters);
+        const carsData = await CarsDBService.getList(filters, sortQuery);
         const newData = CarControllers.getNewDataWithBase64(carsData);
         res.render("cars/cars-list", {
             cars: newData,
