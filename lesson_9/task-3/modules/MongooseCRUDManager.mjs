@@ -8,7 +8,7 @@ class MongooseCRUDManager {
             for (const field of populateFields) {
                 if (typeof field === "string") {
                     query = query.populate(field);
-                } else if (typeof field === "object" && field.populateField && field.targetFieldsForPopulate) {
+                } else if (typeof field === "object" && field.populateField) {
                     query = query.populate(field.populateField, field.targetFieldsForPopulate);
                 }
             }
