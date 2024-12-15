@@ -1,5 +1,4 @@
-import Product from "../models/product/Product.mjs";
-import ProductsDBService from "../models/product/ProductsDBService.mjs";
+import ProductsDBService from "../models/mongo/product/ProductsDBService.mjs";
 
 class ProductController {
     // Метод для отримання всіх товарів

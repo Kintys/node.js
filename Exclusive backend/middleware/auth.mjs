@@ -1,4 +1,3 @@
-import User from "../src/v1/models/user/User.mjs";
 import { parseBearer } from "../utils/jwtHelpers.mjs";
 
 // Функція для налаштування аутентифікації та авторизації

@@ -6,7 +6,7 @@ import bcrypt from "bcryptjs";
 
 // import User from "../models/user/User.mjs";
 // import UsersDBService from "../src/v1/models/user/UsersDBService.mjs";
-import UsersDBService from "../src/v1/models/mysql/UsersDBService.mjs";
+import UsersDBService from "../src/v1/models/mysql/user/UsersDBService.mjs";
 // Налаштування локальної стратегії
 passport.use(
     new LocalStrategy({ usernameField: "email" }, async (email, password, done) => {

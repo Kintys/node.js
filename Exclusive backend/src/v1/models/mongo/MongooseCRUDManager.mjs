@@ -1,4 +1,4 @@
-import FiltersHelper from "../../../utils/searchHelpers/FiltersHelper.mjs";
+import FiltersHelper from "../../../../utils/searchHelpers/FiltersHelper.mjs";
 
 class MongooseCRUDManager {
     constructor(model) {

@@ -9,6 +9,8 @@ class ProductsDBService extends MongooseCRUDManager {
         {
             fieldName: "title",
             filterCategory: "search",
+            tableName: ["gamepads", "pcs", "laptops", "headphones"],
+            fieldNames: ["title", "image_1 AS image", "discount", "oldPrice", "newPrice", "quantity", "rating"],
         },
         {
             fieldName: "newPrice",

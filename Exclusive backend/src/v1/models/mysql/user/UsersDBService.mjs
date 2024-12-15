@@ -1,10 +1,10 @@
-import pool from "../../../../db/connectDB.mjs";
-import MySQLCRUDManager from "./MySQLCRUDManager.mjs";
+import pool from "../../../../../config/default.mjs";
+import MySQLCRUDManager from "../MySQLCRUDManager.mjs";
 import bcrypt from "bcryptjs";
 import { v1 as uuidv1, parse as uuidParse, stringify as uuidStringify } from "uuid";
 
 class UsersDBService extends MySQLCRUDManager {
-    async parseId(userData) {
+    async unParseId(userData) {
         delete userData["password"];
         return { ...userData, _id: uuidStringify(userData._id) };
     }
@@ -42,7 +42,7 @@ class UsersDBService extends MySQLCRUDManager {
                 "password"
             );
 
-            return await this.parseId(result);
+            return await this.unParseId(result);
         } catch (error) {
             return error;
         }
@@ -55,13 +55,13 @@ class UsersDBService extends MySQLCRUDManager {
             ...user,
         });
 
-        return await this.parseId(result);
+        return await this.unParseId(result);
     }
     async findUserByEmail(filters) {
         try {
             const result = await super.findOne(filters);
             if (!result) return false;
-            return await this.parseId(result);
+            return await this.unParseId(result);
         } catch (error) {
             return error;
         }
@@ -72,7 +72,7 @@ class UsersDBService extends MySQLCRUDManager {
             const binaryUuid = Buffer.from(uuidParse(id));
             const result = await super.findOne(binaryUuid, "password");
 
-            return this.parseId(result);
+            return this.unParseId(result);
         } catch (error) {}
     }
     async getHashPassword(password) {

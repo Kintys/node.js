@@ -59,16 +59,55 @@ class FiltersHelper {
     //     });
 
     //     return query;
-    static applyFilters(filters) {
-        let query = "SELECT * FROM your_table WHERE 1=1"; // Базовий запит
+    // static async getTableNames(pool, databaseName, productRegex) {
+    //     try {
+    //         const sql = `
+    //         SELECT table_name
+    //         FROM information_schema.tables
+    //         WHERE table_schema = ? AND table_name REGEXP ?`;
+
+    //         const [tables] = await pool.query(sql, [databaseName, productRegex]);
+
+    //         if (tables.length === 0) {
+    //             throw new Error("Table not found!");
+    //         }
+
+    //         return tables.map((row) => row.table_name);
+    //     } catch (error) {
+    //         console.error("Error fetching table names:", error);
+    //         throw error;
+    //     }
+    // }
+
+    //  WHERE MATCH(title, description) AGAINST(? IN NATURAL LANGUAGE MODE)
+    //    OR title REGEXP ?
+    static async getQuery(tableNames, fieldNames) {
+        return (queries = tableNames.map(
+            (table) =>
+                `
+                    SELECT  ${fieldNames.join(", ")}
+                    FROM ${table}
+                    INNER JOIN images AS image_store
+                    ON ${table}.images_id = image_store._id
+                    `
+        ));
+    }
+    static applyFilters(queryParams, filter) {
+        let query = queryParams;
         const params = [];
 
         const filterHandlers = new Map([
             [
                 "search",
                 (filter) => {
-                    query += ` AND ${filter.fieldName} LIKE ?`;
-                    params.push(`%${filter.filterContent}%`);
+                    query = FiltersHelper.getQuery(
+                        ["gamepads", "pcs", "laptops", "headphones"],
+                        ["title", "image_1 AS image", "discount", "oldPrice", "newPrice", "quantity", "rating"]
+                    );
+                    if (query.length >= 1) {
+                        query.join(" UNION ALL ");
+                    }
+                    params = tableNames.flatMap(() => [searchText, searchText]);
                 },
             ],
             [
@@ -123,7 +162,8 @@ class FiltersHelper {
         filters.forEach((filter) => {
             const handler = filterHandlers.get(filter.filterType);
             if (handler) {
-                handler(filter);
+                let query = FiltersHelper.getQuery();
+                handler(query, filter);
             } else {
                 console.warn(`Unsupported filter type: ${filter.filterType}`);
             }

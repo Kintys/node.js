@@ -1,6 +1,6 @@
 import { prepareToken } from "../../../utils/jwtHelpers.mjs";
-import UsersDBService from "../models/mysql/UsersDBService.mjs";
-
+import UsersDBService from "../models/mysql/user/UsersDBService.mjs";
+import ProductDBServices from "../models/mysql/product/ProductDBService.mjs";
 class AuthController {
     static async signup(req, res) {
         try {
@@ -32,9 +32,10 @@ class AuthController {
     }
 
     static async login(req, res) {
-        const email = await UsersDBService.findOneUser({ email: "igor@gmail.com" });
-        console.log(email);
-        res.send("ok");
+        // const email = await UsersDBService.findOneUser({ email: "igor@gmail.com" });
+        // console.log(email);
+        // res.send("ok");
+        const product = await ProductDBServices.filterFunction();
         // if (!req.user) {
         //     return res.status(401).json({ error: "User not found" });
         // }
@@ -141,3 +142,90 @@ class AuthController {
 }
 
 export default AuthController;
+//   buildFilterQuery(filters, tableNames) {
+//         let fullQuery = "";
+//         let allParams = [];
+
+//         const filterHandlers = new Map([
+//             [
+//                 "search",
+//                 (filter) => {
+//                     return {
+//                         query: `WHERE MATCH(title, description) AGAINST(? IN NATURAL LANGUAGE MODE)
+//                     OR title REGEXP ?
+//                 `,
+//                         params: tableNames.flatMap(() => [filter.filterContent, filter.filterContent]),
+//                     };
+//                 },
+//             ],
+//             [
+//                 "minValue",
+//                 (filter) => {
+//                     return {
+//                         query: `WHERE 1=1 AND ${filter.fieldName} >= ?`,
+//                         params: [filter.filterContent],
+//                     };
+//                 },
+//             ],
+//             [
+//                 "maxValue",
+//                 (filter) => {
+//                     return {
+//                         query: `WHERE 1=1 AND ${filter.fieldName} <= ?`,
+//                         params: [filter.filterContent],
+//                     };
+//                 },
+//             ],
+//             [
+//                 "rating",
+//                 (filter) => {
+//                     return {
+//                         query: `WHERE 1=1 AND ${filter.fieldName} >= ?`,
+//                         params: [filter.filterContent],
+//                     };
+//                 },
+//             ],
+//             [
+//                 "in",
+//                 (filter) => {
+//                     const placeholders = filter.filterContent.map(() => "?").join(", ");
+//                     return {
+//                         query: `WHERE 1=1 AND ${filter.fieldName} IN (${placeholders})`,
+//                         params: filter.filterContent,
+//                     };
+//                 },
+//             ],
+//             [
+//                 "nin",
+//                 (filter) => {
+//                     const placeholders = filter.filterContent.map(() => "?").join(", ");
+//                     return {
+//                         query: `WHERE 1=1 AND ${filter.fieldName} NOT IN (${placeholders})`,
+//                         params: filter.filterContent,
+//                     };
+//                 },
+//             ],
+//             [
+//                 "exists",
+//                 (filter) => {
+//                     return {
+//                         query: filter.filterContent
+//                             ? `WHERE 1=1 AND ${filter.fieldName} IS NOT NULL`
+//                             : `WHERE 1=1 AND ${filter.fieldName} IS NULL`,
+//                         params: [],
+//                     };
+//                 },
+//             ],
+//         ]);
+//         filters.forEach((filter) => {
+//             const handler = filterHandlers.get(filter.filterType);
+//             if (handler) {
+//                 const { query, params } = handler(filter);
+//                 fullQuery += ` ${this.getQuery(tableNames, query)}`;
+//                 allParams.push(...params);
+//             } else {
+//                 console.warn(`Unsupported filter type: ${filter.filterType}`);
+//             }
+//         });
+//         return { fullQuery, params: allParams };
+//     }
