@@ -36,13 +36,12 @@ class ProductDBServices extends MySQLCRUDManager {
     };
     async findManyWithSearchOptions(reqQuery) {
         try {
-            const { queryParts, combinedParameters } = await FiltersMySQLHelper.applyFiltersOptionsFromQuery(
+            const { query, combinedParameters } = await FiltersMySQLHelper.applyFindOptionsFromQuery(
                 reqQuery,
                 ProductDBServices.fieldsConfigurations,
                 ProductDBServices.queryConfig
             );
-            console.log(queryParts);
-            const [results] = await pool.query(queryParts, combinedParameters);
+            const [results] = await pool.query(query, combinedParameters);
 
             return results;
         } catch (error) {

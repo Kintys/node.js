@@ -10,7 +10,6 @@ class ProductController {
             }
             // const productsList = await ProductsDBService.getList(filters);
             // const product = await ProductDBServices.findManyWithSearchOptions();
-            console.log(req.query);
             const productsList = await ProductDBServices.findManyWithSearchOptions(filters);
             // const productsList = await Product.find({}).populate("brand");
 

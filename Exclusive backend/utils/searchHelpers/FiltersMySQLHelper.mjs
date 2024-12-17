@@ -132,6 +132,34 @@ class FiltersMySQLHelper {
             return error;
         }
     }
+    static async applyActions(query, actions) {
+        // if (!actions) return query;
+        const actionHandlers = new Map([
+            [
+                "sort",
+                (action) => {
+                    query += ` ORDER BY ${action.field} ${action.order}\n`;
+                },
+            ],
+            [
+                "pagination",
+                (action) => {
+                    query += ` LIMIT ${action.limitValue} OFFSET ${action.skipValue}\n`;
+                },
+            ],
+        ]);
+
+        actions.forEach((action) => {
+            const handler = actionHandlers.get(action.type);
+
+            if (handler) {
+                handler(action);
+            } else {
+                console.warn(`Unsupported action type: ${action.type}`);
+            }
+        });
+        return query;
+    }
 
     // static applyFindOptionsFromQuery(reqQuery, fieldsConfiguration, selectedFields, tableName, query) {
     //     const { filters, actions } = QueryParser.parseQuery(reqQuery, fieldsConfiguration);
@@ -139,13 +167,19 @@ class FiltersMySQLHelper {
     //     if (actions.length) query = this.applyActions(query, actions);
     //     return query;
     // }
-    static async applyFiltersOptionsFromQuery(reqQuery, fieldsConfiguration, queryConfig) {
-        const { filters } = QueryParser.parseQuery(reqQuery, fieldsConfiguration);
-        return await FiltersMySQLHelper.applyFilters(queryConfig, filters);
+    static async applyFindOptionsFromQuery(reqQuery, fieldsConfiguration, queryConfig) {
+        const { filters, actions } = QueryParser.parseQuery(reqQuery, fieldsConfiguration);
+        try {
+            const { queryParts, combinedParameters } = await FiltersMySQLHelper.applyFilters(queryConfig, filters);
+            const query = await FiltersMySQLHelper.applyActions(queryParts, actions);
+            return { query, combinedParameters };
+        } catch (error) {
+            return error;
+        }
     }
     static applyActionsOptionsFromQuery(reqQuery, fieldsConfiguration, query) {
-        const { filters, actions } = QueryParser.parseQuery(reqQuery, fieldsConfiguration);
-        if (actions.length) query = this.applyActions(query, actions);
+        const { actions } = QueryParser.parseQuery(reqQuery, fieldsConfiguration);
+        if (actions.length) query = this.applyActions(actions);
         return query;
     }
 }

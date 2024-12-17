@@ -186,11 +186,14 @@ class QueryParser {
         const actions = [];
         if (query.sort) {
             const [field, order] = query.sort.split(":");
-            actions.push({ type: "sort", field, order: order === "desc" ? -1 : 1 });
+            actions.push({ type: "sort", field, order: order === "desc" ? "DESC" : "ASC" });
         }
         if (query.page && query.perPage) {
-            actions.push({ type: "skip", value: query.page * query.perPage });
-            actions.push({ type: "limit", value: parseInt(query.perPage) });
+            actions.push({
+                type: "pagination",
+                skipValue: query.page * query.perPage,
+                limitValue: parseInt(query.perPage),
+            });
         }
         return actions;
     }
