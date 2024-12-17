@@ -1,4 +1,4 @@
-import ProductsDBService from "../models/mongo/product/ProductsDBService.mjs";
+import ProductDBServices from "../models/mysql/product/ProductDBService.mjs";
 
 class ProductController {
     // Метод для отримання всіх товарів
@@ -8,8 +8,12 @@ class ProductController {
             for (const key in req.query) {
                 if (req.query[key]) filters[key] = req.query[key];
             }
-            const productsList = await ProductsDBService.getList(filters);
+            // const productsList = await ProductsDBService.getList(filters);
+            // const product = await ProductDBServices.findManyWithSearchOptions();
+            console.log(req.query);
+            const productsList = await ProductDBServices.findManyWithSearchOptions(filters);
             // const productsList = await Product.find({}).populate("brand");
+
             res.status(200).json({
                 data: productsList,
             });

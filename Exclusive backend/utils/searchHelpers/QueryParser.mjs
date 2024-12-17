@@ -105,11 +105,21 @@ class QueryParser {
             ],
         ],
         [
-            "search",
+            "searchOne",
             (fieldName, filterValue) => [
                 {
                     fieldName,
-                    filterType: "search",
+                    filterType: "searchOne",
+                    filterContent: filterValue,
+                },
+            ],
+        ],
+        [
+            "searchMany",
+            (fieldName, filterValue) => [
+                {
+                    fieldName,
+                    filterType: "searchMany",
                     filterContent: filterValue,
                 },
             ],

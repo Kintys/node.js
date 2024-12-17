@@ -1,6 +1,6 @@
 import { prepareToken } from "../../../utils/jwtHelpers.mjs";
 import UsersDBService from "../models/mysql/user/UsersDBService.mjs";
-import ProductDBServices from "../models/mysql/product/ProductDBService.mjs";
+
 class AuthController {
     static async signup(req, res) {
         try {
@@ -35,7 +35,6 @@ class AuthController {
         // const email = await UsersDBService.findOneUser({ email: "igor@gmail.com" });
         // console.log(email);
         // res.send("ok");
-        const product = await ProductDBServices.filterFunction();
         // if (!req.user) {
         //     return res.status(401).json({ error: "User not found" });
         // }

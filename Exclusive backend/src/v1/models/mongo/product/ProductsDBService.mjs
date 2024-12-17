@@ -5,22 +5,6 @@ class ProductsDBService extends MongooseCRUDManager {
     /**
      * Конфігурація полів для фільтрації та пошуку (які будемо опрацьовувати).
      */
-    static fieldsConfigurations = [
-        {
-            fieldName: "title",
-            filterCategory: "search",
-            tableName: ["gamepads", "pcs", "laptops", "headphones"],
-            fieldNames: ["title", "image_1 AS image", "discount", "oldPrice", "newPrice", "quantity", "rating"],
-        },
-        {
-            fieldName: "newPrice",
-            filterCategory: "range",
-        },
-        {
-            fieldName: "rating",
-            filterCategory: "rating",
-        },
-    ];
 
     /**
      * Отримує список продуктів з урахуванням запиту користувача.
