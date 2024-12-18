@@ -6,7 +6,7 @@ class MySQLCRUDManager {
     }
     async getList() {
         try {
-            const [rows] = await this.this.pool.query(`SELECT * FROM ${this.module};`);
+            const [rows] = await this.pool.query(`SELECT * FROM ${this.module};`);
             return rows;
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -16,9 +16,13 @@ class MySQLCRUDManager {
 
     async create(data, projections) {
         try {
-            const sql = `INSERT INTO ${this.module} SET ?`;
-            const result = await this.pool.query(sql, data);
-            return this.findOne(result[0]._id, projections);
+            const sql = `INSERT INTO ${this.module} SET ? ;`;
+            const saveResult = await this.pool.query(sql, data);
+            if (saveResult.affectedRows === 0) {
+                throw new Error("INSERT INTO");
+            }
+            const result = await this.findOne({ _id: data._id });
+            return result;
         } catch (error) {
             console.error("Error saving data:", error);
             return null;
@@ -69,7 +73,8 @@ class MySQLCRUDManager {
             const columnName = Object.keys(params)[0];
             if (!allowedColumns.includes(columnName)) throw new Error(`Invalid column name: ${columnName}`);
 
-            const sql = `SELECT ${allowedColumns} FROM users WHERE ${columnName} = ? LIMIT 1`;
+            const sql = `SELECT ${allowedColumns} FROM ${this.module} WHERE ${columnName} = ? LIMIT 1`;
+
             const values = [`${params[columnName]}`];
             const [result] = await this.pool.query(sql, values);
 

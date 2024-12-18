@@ -35,7 +35,7 @@ class FiltersMySQLHelper {
             .map((tableName) => {
                 filterParameters ? combinedParameters.push(...filterParameters) : "";
                 return `
-                SELECT ${tableName}._id AS id, ${fieldsToSelect.join(", ")}
+                SELECT ${tableName}._id AS id${fieldsToSelect.length ? `, ${fieldsToSelect.join(", ")}` : ""}
                 FROM ${tableName}
                 INNER JOIN images AS image_store
                 ON ${tableName}.images_id = image_store._id
@@ -177,10 +177,14 @@ class FiltersMySQLHelper {
             return error;
         }
     }
-    static applyActionsOptionsFromQuery(reqQuery, fieldsConfiguration, query) {
-        const { actions } = QueryParser.parseQuery(reqQuery, fieldsConfiguration);
-        if (actions.length) query = this.applyActions(actions);
-        return query;
+    static async applyFiltersOptionsFromQuery(reqQuery, fieldsConfiguration, queryConfig) {
+        const { filters } = QueryParser.parseQuery(reqQuery, fieldsConfiguration);
+        try {
+            const { queryParts, combinedParameters } = await FiltersMySQLHelper.applyFilters(queryConfig, filters);
+            return queryParts;
+        } catch (error) {
+            return error;
+        }
     }
 }
 

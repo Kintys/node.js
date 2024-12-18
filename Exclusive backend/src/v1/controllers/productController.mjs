@@ -10,11 +10,12 @@ class ProductController {
             }
             // const productsList = await ProductsDBService.getList(filters);
             // const product = await ProductDBServices.findManyWithSearchOptions();
+            const { total_count } = await ProductDBServices.getTotalPage();
             const productsList = await ProductDBServices.findManyWithSearchOptions(filters);
             // const productsList = await Product.find({}).populate("brand");
 
             res.status(200).json({
-                data: productsList,
+                data: { documents: productsList, totalNumber: total_count },
             });
         } catch (error) {
             res.status(500).json({ error: "Error fetching products" });

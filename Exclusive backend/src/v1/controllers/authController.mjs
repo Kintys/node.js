@@ -124,8 +124,7 @@ class AuthController {
             //     res.json({ err: "error" });
             // }
 
-            const user = await UsersDBService.getUserProfileByIdWithOutPassword(req.user.id);
-            console.log(user);
+            const user = await UsersDBService.getUserProfileByIdWithOutPassword({ _id: req.user.id });
             // const token = prepareToken(
             //     {
             //         id: req.user._id,

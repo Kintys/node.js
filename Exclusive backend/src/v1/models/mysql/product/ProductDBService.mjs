@@ -31,6 +31,7 @@ class ProductDBServices extends MySQLCRUDManager {
             "quantity",
             "rating",
             "description",
+            "evaluation",
         ],
         tableNames: ["gamepads", "pcs", "laptops", "headphones"],
     };
@@ -41,9 +42,24 @@ class ProductDBServices extends MySQLCRUDManager {
                 ProductDBServices.fieldsConfigurations,
                 ProductDBServices.queryConfig
             );
+
             const [results] = await pool.query(query, combinedParameters);
 
             return results;
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+    async getTotalPage() {
+        try {
+            const query = await FiltersMySQLHelper.applyFiltersOptionsFromQuery({}, [], {
+                fieldsToSelect: [],
+                tableNames: ProductDBServices.queryConfig.tableNames,
+            });
+            const totalQuery = `SELECT COUNT(*) AS total_count FROM (${query}) AS combined_results;`;
+            const [results] = await pool.query(totalQuery);
+
+            return results[0];
         } catch (error) {
             console.error("Error:", error);
         }
