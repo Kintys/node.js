@@ -167,8 +167,13 @@ class FiltersMySQLHelper {
     //     if (actions.length) query = this.applyActions(query, actions);
     //     return query;
     // }
-    static async applyFindOptionsFromQuery(reqQuery, fieldsConfiguration, queryConfig) {
-        const { filters, actions } = QueryParser.parseQuery(reqQuery, fieldsConfiguration);
+    static async applyFindOptionsFromQuery(reqQuery, fieldsConfiguration, queryBaseConfig) {
+        const { filters, actions, queryConfig } = QueryParser.parseQuery(
+            reqQuery,
+            fieldsConfiguration,
+            queryBaseConfig
+        );
+
         try {
             const { queryParts, combinedParameters } = await FiltersMySQLHelper.applyFilters(queryConfig, filters);
             const query = await FiltersMySQLHelper.applyActions(queryParts, actions);
@@ -177,8 +182,12 @@ class FiltersMySQLHelper {
             return error;
         }
     }
-    static async applyFiltersOptionsFromQuery(reqQuery, fieldsConfiguration, queryConfig) {
-        const { filters } = QueryParser.parseQuery(reqQuery, fieldsConfiguration);
+    static async applyFiltersOptionsFromQuery(reqQuery, fieldsConfiguration, queryBaseConfig) {
+        const { filters, actions, queryConfig } = QueryParser.parseQuery(
+            reqQuery,
+            fieldsConfiguration,
+            queryBaseConfig
+        );
         try {
             const { queryParts, combinedParameters } = await FiltersMySQLHelper.applyFilters(queryConfig, filters);
             return queryParts;

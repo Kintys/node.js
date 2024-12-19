@@ -1,7 +1,6 @@
 import ProductDBServices from "../models/mysql/product/ProductDBService.mjs";
 
 class ProductController {
-    // Метод для отримання всіх товарів
     static async getAllProducts(req, res) {
         try {
             const filters = {};
@@ -10,7 +9,7 @@ class ProductController {
             }
             // const productsList = await ProductsDBService.getList(filters);
             // const product = await ProductDBServices.findManyWithSearchOptions();
-            const { total_count } = await ProductDBServices.getTotalPage();
+            const { total_count } = await ProductDBServices.getTotalPage(filters);
             const productsList = await ProductDBServices.findManyWithSearchOptions(filters);
             // const productsList = await Product.find({}).populate("brand");
 

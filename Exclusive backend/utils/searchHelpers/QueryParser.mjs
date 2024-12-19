@@ -197,12 +197,20 @@ class QueryParser {
         }
         return actions;
     }
+    static categoryParser(query, queryBaseConfig) {
+        let newConfig = queryBaseConfig;
+        if (query.category) {
+            newConfig = { ...queryBaseConfig, tableNames: [...query.category] };
+        }
+        return newConfig;
+    }
 
     //Загальний метод парсинга усіх параметрів
-    static parseQuery(query, fieldsConfigurations) {
+    static parseQuery(query, fieldsConfigurations, queryBaseConfig) {
         const filters = this.filtersParser(fieldsConfigurations, query);
         const actions = this.actionsParser(query);
-        return { filters, actions };
+        const queryConfig = this.categoryParser(query, queryBaseConfig);
+        return { filters, actions, queryConfig };
     }
 }
 export default QueryParser;

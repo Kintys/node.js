@@ -21,7 +21,7 @@ class ProductDBServices extends MySQLCRUDManager {
             filterCategory: "sort",
         },
     ];
-    static queryConfig = {
+    static queryBaseConfig = {
         fieldsToSelect: [
             "title",
             "image_1 AS image",
@@ -40,7 +40,7 @@ class ProductDBServices extends MySQLCRUDManager {
             const { query, combinedParameters } = await FiltersMySQLHelper.applyFindOptionsFromQuery(
                 reqQuery,
                 ProductDBServices.fieldsConfigurations,
-                ProductDBServices.queryConfig
+                ProductDBServices.queryBaseConfig
             );
 
             const [results] = await pool.query(query, combinedParameters);
@@ -50,11 +50,11 @@ class ProductDBServices extends MySQLCRUDManager {
             console.error("Error:", error);
         }
     }
-    async getTotalPage() {
+    async getTotalPage(reqQuery) {
         try {
-            const query = await FiltersMySQLHelper.applyFiltersOptionsFromQuery({}, [], {
+            const query = await FiltersMySQLHelper.applyFiltersOptionsFromQuery(reqQuery, [], {
                 fieldsToSelect: [],
-                tableNames: ProductDBServices.queryConfig.tableNames,
+                tableNames: ProductDBServices.queryBaseConfig.tableNames,
             });
             const totalQuery = `SELECT COUNT(*) AS total_count FROM (${query}) AS combined_results;`;
             const [results] = await pool.query(totalQuery);
