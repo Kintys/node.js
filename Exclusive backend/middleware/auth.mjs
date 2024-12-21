@@ -17,6 +17,7 @@ const auth = (app) => {
             "/api/v1/auth/login",
             "/api/v1/auth/signup",
             "/api/v1/products",
+            "/api/v1/products/brands",
             "/api/v1/auth/login/google",
             "/api/v1/auth/google/callback",
             "/api/v1/products/filters-data",

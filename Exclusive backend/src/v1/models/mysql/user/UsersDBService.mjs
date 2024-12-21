@@ -60,7 +60,7 @@ class UsersDBService extends MySQLCRUDManager {
     }
     async getUserProfileByIdWithOutPassword(id) {
         try {
-            const result = await super.findOne(id, "password");
+            const result = await super.findOne(id, ["password"]);
             return result;
         } catch (error) {}
     }

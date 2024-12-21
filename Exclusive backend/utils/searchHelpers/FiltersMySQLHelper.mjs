@@ -1,33 +1,6 @@
 import QueryParser from "./QueryParser.mjs";
 
 class FiltersMySQLHelper {
-    // async getTableNameFromDb(tableName) {
-    //     const sql = `
-    //             SELECT table_name
-    //             FROM information_schema.tables
-    //             WHERE table_schema = '${_config.db.mysql.database}' AND table_name REGEXP ?`;
-
-    //     const TableREGEXP = [...tableName].join("|").trim();
-
-    //     const [tables] = await pool.query(sql, TableREGEXP);
-
-    //     if (tables.length === 0) {
-    //         throw new Error("Table not found!");
-    //     }
-    //     return (tableNames = tables.map((row) => row.table_name));
-    // }
-    //   if (!filterCondition && !filterParameters) {
-    //     queryParts = tableNames
-    //         .map((tableName) => {
-    //             return `
-    //         SELECT ${tableName}._id AS id, ${fieldsToSelect.join(", ")}
-    //         FROM ${tableName}
-    //         INNER JOIN images AS image_store
-    //         ON ${tableName}.images_id = image_store._id
-    //     `;
-    //         })
-    //         .join(" UNION ALL ");
-    // } else {
     static async getQuery(queryConfig, filterCondition, filterParameters) {
         const { tableNames, fieldsToSelect } = queryConfig;
         const combinedParameters = [];
@@ -35,10 +8,10 @@ class FiltersMySQLHelper {
             .map((tableName) => {
                 filterParameters ? combinedParameters.push(...filterParameters) : "";
                 return `
-                SELECT ${tableName}._id AS id${fieldsToSelect.length ? `, ${fieldsToSelect.join(", ")}` : ""}
+                SELECT ${tableName}._id ${fieldsToSelect.length ? `, ${fieldsToSelect.join(", ")}` : ""}
                 FROM ${tableName}
-                INNER JOIN images AS image_store
-                ON ${tableName}.images_id = image_store._id
+                INNER JOIN images AS image_store ON ${tableName}.images_id = image_store._id
+                INNER JOIN brands ON ${tableName}.brands_id = brands._id
                 ${filterCondition ? `WHERE ${filterCondition}` : ""}
             `;
             })
@@ -80,10 +53,25 @@ class FiltersMySQLHelper {
                 },
             ],
             [
+                "range",
+                (filter) => {
+                    query += ` AND ${filter.fieldName} BETWEEN ? AND ?`;
+                    params.push(...filter.filterContent);
+                },
+            ],
+            [
                 "rating",
                 (filter) => {
                     query += ` AND ${filter.fieldName} >= ?`;
                     params.push(parseInt(filter.filterContent));
+                },
+            ],
+            [
+                "brands",
+                (filter) => {
+                    const placeholders = filter.filterContent.map(() => "?").join(", ");
+                    query += ` AND ${filter.fieldName}_id IN (${placeholders})`;
+                    params.push(...filter.filterContent);
                 },
             ],
             [
@@ -133,7 +121,6 @@ class FiltersMySQLHelper {
         }
     }
     static async applyActions(query, actions) {
-        // if (!actions) return query;
         const actionHandlers = new Map([
             [
                 "sort",

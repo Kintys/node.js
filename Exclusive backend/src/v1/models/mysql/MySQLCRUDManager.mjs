@@ -4,9 +4,12 @@ class MySQLCRUDManager {
         this.pool = pool;
         this.module = module;
     }
-    async getList() {
+    async getList(projections) {
         try {
-            const [rows] = await this.pool.query(`SELECT * FROM ${this.module};`);
+            const allowedColumns = await this.getColumnsNameFromTable(projections);
+            if (!allowedColumns) throw new Error(`Invalid column name: ${allowedColumns}`);
+
+            const [rows] = await this.pool.query(`SELECT ${allowedColumns} FROM ${this.module};`);
             return rows;
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -29,10 +32,18 @@ class MySQLCRUDManager {
         }
     }
 
-    async getById(id) {
+    async getById(id, projections) {
         try {
-            const sql = `SELECT * FROM ${this.module} WHERE _id = ?`;
+            if (!id) {
+                throw new Error("Invalid ID provided");
+            }
+
+            const allowedColumns = await this.getColumnsNameFromTable(projections);
+            if (!allowedColumns) throw new Error(`Invalid column name: ${allowedColumns}`);
+
+            const sql = `SELECT ${allowedColumns} FROM ${this.module} WHERE _id = ?`;
             const [rows] = await this.pool.query(sql, [id]);
+
             return rows[0] || null;
         } catch (error) {
             console.error("Error fetching data by ID:", error);
@@ -88,16 +99,17 @@ class MySQLCRUDManager {
         }
     }
 
-    async getColumnsNameFromTable(excludedColumn = null) {
+    async getColumnsNameFromTable(excludedColumn = []) {
         try {
+            const notIncludesColumnNames = excludedColumn.map(() => "?").join(", ");
             const query = `
             SELECT COLUMN_NAME
             FROM INFORMATION_SCHEMA.COLUMNS
-            WHERE TABLE_NAME = ? AND TABLE_SCHEMA = ? 
-            ${excludedColumn ? "AND COLUMN_NAME != ?" : ""};
+            WHERE TABLE_NAME = ? AND TABLE_SCHEMA = ? AND COLUMN_NAME != ? 
+            ${excludedColumn.length ? `AND COLUMN_NAME NOT IN (${notIncludesColumnNames})` : ""};
         `;
             const values = excludedColumn
-                ? [this.module, config.db.mysql.database, excludedColumn]
+                ? [this.module, config.db.mysql.database, "pk", ...excludedColumn]
                 : [this.module, config.db.mysql.database];
 
             const [columns] = await this.pool.query(query, values);

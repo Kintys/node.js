@@ -1,8 +1,8 @@
 import _config from "../../../../../config/default.mjs";
 import pool from "../../../../../db/connectDB.mjs";
-import MySQLCRUDManager from "../MySQLCRUDManager.mjs";
+
 import FiltersMySQLHelper from "../../../../../utils/searchHelpers/FiltersMySQLHelper.mjs";
-class ProductDBServices extends MySQLCRUDManager {
+class ProductDBServices {
     static fieldsConfigurations = [
         {
             fieldName: "title",
@@ -20,12 +20,21 @@ class ProductDBServices extends MySQLCRUDManager {
             fieldName: "sort",
             filterCategory: "sort",
         },
+        {
+            fieldName: "brands",
+            filterCategory: "brands",
+        },
+        {
+            fieldName: "newPrice",
+            filterCategory: "range",
+        },
     ];
     static queryBaseConfig = {
         fieldsToSelect: [
             "title",
             "image_1 AS image",
             "discount",
+            "brands.name AS brand",
             "oldPrice",
             "newPrice",
             "quantity",
@@ -33,16 +42,16 @@ class ProductDBServices extends MySQLCRUDManager {
             "description",
             "evaluation",
         ],
+        //"pcs", "laptops", "headphones"
         tableNames: ["gamepads", "pcs", "laptops", "headphones"],
     };
-    async findManyWithSearchOptions(reqQuery) {
+    async getProductListWithSearchOptions(reqQuery) {
         try {
             const { query, combinedParameters } = await FiltersMySQLHelper.applyFindOptionsFromQuery(
                 reqQuery,
                 ProductDBServices.fieldsConfigurations,
                 ProductDBServices.queryBaseConfig
             );
-
             const [results] = await pool.query(query, combinedParameters);
 
             return results;
@@ -65,4 +74,4 @@ class ProductDBServices extends MySQLCRUDManager {
         }
     }
 }
-export default new ProductDBServices(pool, "product");
+export default new ProductDBServices();

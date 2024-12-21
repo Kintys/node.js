@@ -95,12 +95,12 @@ class QueryParser {
 
     static filterMethods = new Map([
         [
-            "list",
+            "brands",
             (fieldName, filterValue) => [
                 {
                     fieldName,
-                    filterType: "in",
-                    filterContent: filterValue.split(","),
+                    filterType: "brands",
+                    filterContent: filterValue,
                 },
             ],
         ],
@@ -139,37 +139,28 @@ class QueryParser {
             (fieldName, filterValue) => {
                 let minValue, maxValue;
                 if (filterValue.includes("-")) {
-                    [minValue, maxValue] = filterValue.split("-").map(parseFloat);
-                } else {
-                    if (!Array.isArray(filterValue)) {
-                        filterValue = [filterValue];
-                    }
-                    filterValue.forEach((val) => {
-                        if (val.startsWith("gte:")) minValue = parseFloat(val.slice(4));
-                        if (val.startsWith("lte:")) maxValue = parseFloat(val.slice(4));
-                    });
+                    filterValue = filterValue.split("-");
                 }
-
+                if (!Array.isArray(filterValue)) {
+                    filterValue = [filterValue];
+                }
+                filterValue.forEach((val) => {
+                    if (val.startsWith("gte:")) minValue = parseFloat(val.slice(4));
+                    if (val.startsWith("lte:")) maxValue = parseFloat(val.slice(4));
+                });
                 const filtersContent = [];
-                if (!isNaN(minValue)) {
+                if (!isNaN(minValue) && !isNaN(maxValue)) {
                     filtersContent.push({
                         fieldName,
-                        filterType: "minValue",
-                        filterContent: minValue,
-                    });
-                }
-                if (!isNaN(maxValue)) {
-                    filtersContent.push({
-                        fieldName,
-                        filterType: "maxValue",
-                        filterContent: maxValue,
+                        filterType: "range",
+                        filterContent: [minValue, maxValue],
                     });
                 }
                 return filtersContent;
             },
         ],
     ]);
-    //-------
+
     static filtersParser(fieldsConfigurations, query) {
         const filters = [];
         fieldsConfigurations.forEach(({ fieldName, filterCategory }) => {
@@ -181,7 +172,6 @@ class QueryParser {
         return filters;
     }
 
-    //------- парсимо всі дії (сортування, пагінація) ---------
     static actionsParser(query) {
         const actions = [];
         if (query.sort) {
@@ -205,7 +195,6 @@ class QueryParser {
         return newConfig;
     }
 
-    //Загальний метод парсинга усіх параметрів
     static parseQuery(query, fieldsConfigurations, queryBaseConfig) {
         const filters = this.filtersParser(fieldsConfigurations, query);
         const actions = this.actionsParser(query);
@@ -214,19 +203,3 @@ class QueryParser {
     }
 }
 export default QueryParser;
-
-// ------------------ приклад параметрів ---------------------
-// const fieldsConfig = [
-//   { fieldName: 'price', filterCategory: 'range' },
-//   { fieldName: 'category', filterCategory: 'list' },
-//   { fieldName: 'name', filterCategory: 'search' },
-// ];
-
-// const query = {
-//   price: '10-20',
-//   category: 'electronics,books',
-//   name: 'iphone',
-//   sort: 'price:desc',
-//   page: 2,
-//   perPage: 10,
-// };
