@@ -1,77 +1,45 @@
 import _config from "../../../../../config/default.mjs";
 import pool from "../../../../../db/connectDB.mjs";
+import MySQLCRUDManager from "../MySQLCRUDManager.mjs";
 
-import FiltersMySQLHelper from "../../../../../utils/searchHelpers/FiltersMySQLHelper.mjs";
-class ProductDBServices {
-    static fieldsConfigurations = [
-        {
-            fieldName: "title",
-            filterCategory: "searchOne",
-        },
-        {
-            fieldName: "newPrice",
-            filterCategory: "range",
-        },
-        {
-            fieldName: "rating",
-            filterCategory: "rating",
-        },
-        {
-            fieldName: "sort",
-            filterCategory: "sort",
-        },
-        {
-            fieldName: "brands",
-            filterCategory: "brands",
-        },
-        {
-            fieldName: "newPrice",
-            filterCategory: "range",
-        },
-    ];
-    static queryBaseConfig = {
-        fieldsToSelect: [
-            "title",
-            "image_1 AS image",
-            "discount",
-            "brands.name AS brand",
-            "oldPrice",
-            "newPrice",
-            "quantity",
-            "rating",
-            "description",
-            "evaluation",
-        ],
-        //"pcs", "laptops", "headphones"
-        tableNames: ["gamepads", "pcs", "laptops", "headphones"],
-    };
-    async getProductListWithSearchOptions(reqQuery) {
-        try {
-            const { query, combinedParameters } = await FiltersMySQLHelper.applyFindOptionsFromQuery(
-                reqQuery,
-                ProductDBServices.fieldsConfigurations,
-                ProductDBServices.queryBaseConfig
-            );
-            const [results] = await pool.query(query, combinedParameters);
-
-            return results;
-        } catch (error) {
-            console.error("Error:", error);
-        }
+class ProductDBServices extends MySQLCRUDManager {
+    static tableNames = ["gamepads", "pcs", "laptops", "headphones"];
+    async getUnionQuery(tableNames) {
+        const queryParts = await Promise.all(
+            tableNames.map(async (tableName) => {
+                return `SELECT * FROM ${tableName}
+            `;
+            })
+        );
+        return queryParts.join(" UNION ALL ");
     }
-    async getTotalPage(reqQuery) {
+    async getProductById(id) {
         try {
-            const query = await FiltersMySQLHelper.applyFiltersOptionsFromQuery(reqQuery, [], {
-                fieldsToSelect: [],
-                tableNames: ProductDBServices.queryBaseConfig.tableNames,
-            });
-            const totalQuery = `SELECT COUNT(*) AS total_count FROM (${query}) AS combined_results;`;
-            const [results] = await pool.query(totalQuery);
+            const unionQuery = await this.getUnionQuery(ProductDBServices.tableNames);
 
-            return results[0];
-        } catch (error) {
-            console.error("Error:", error);
-        }
+            const query = `SELECT combined_table._id,
+            combined_table.title,
+            JSON_ARRAY(images.image_1, images.image_2, images.image_3, images.image_4) AS images,
+            combined_table.discount,
+            brands.name AS brand,
+            combined_table.oldPrice,
+            combined_table.newPrice,
+            combined_table.quantity,
+            combined_table.rating,
+            combined_table.description,
+            combined_table.evaluation
+            FROM(${unionQuery}) AS combined_table
+            INNER JOIN images ON combined_table.images_id = images._id
+            INNER JOIN brands ON combined_table.brands_id = brands._id
+            INNER JOIN colors ON combined_table.colors_id = colors._id
+            WHERE combined_table._id = ? 
+            LIMIT 1`;
+
+            const [results] = await pool.query(query, [id]);
+            const res = { ...results[0], images: JSON.parse(results[0].images) };
+            return res;
+        } catch (error) {}
     }
 }
-export default new ProductDBServices();
+
+export default new ProductDBServices(pool, "");

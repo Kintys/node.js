@@ -33,9 +33,9 @@ class FiltersMySQLHelper {
             [
                 "searchMany",
                 (filter) => {
-                    params = [filter.filterContent];
                     query = query.replace("1=1", "");
-                    query += `MATCH(${filter.fieldName.join(", ")}) AGAINST(? IN NATURAL LANGUAGE MODE)`;
+                    query += `MATCH(${filter.fieldName.join(", ")}) AGAINST(? IN BOOLEAN MODE)`;
+                    params = [`${filter.filterContent}*`];
                 },
             ],
             [

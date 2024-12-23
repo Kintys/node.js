@@ -1,31 +1,55 @@
 import ProductDBServices from "../models/mysql/product/ProductDBService.mjs";
 import BrandsDBServices from "../models/mysql/brand/BrandDBServices.mjs";
 class ProductController {
-    static async getAllProducts(req, res) {
-        try {
-            const filters = {};
-            for (const key in req.query) {
-                if (req.query[key]) filters[key] = req.query[key];
-            }
+    // static async getAllProducts(req, res) {
+    //     try {
+    //         const filters = {};
+    //         for (const key in req.query) {
+    //             if (req.query[key]) filters[key] = req.query[key];
+    //         }
+    //         const fieldArray = [
+    //             "title",
+    //             "image_1 AS image",
+    //             "discount",
+    //             "brands.name AS brand",
+    //             "oldPrice",
+    //             "newPrice",
+    //             "quantity",
+    //             "rating",
+    //             "description",
+    //             "evaluation",
+    //         ];
+    //         const { total_count } = await ProductDBServices.getTotalPage(filters);
+    //         const productsList = await ProductDBServices.getProductListWithFilterOptions(filters, fieldArray);
 
-            const { total_count } = await ProductDBServices.getTotalPage(filters);
-            const productsList = await ProductDBServices.getProductListWithSearchOptions(filters);
-
-            res.status(200).json({
-                data: { documents: productsList, totalNumber: total_count },
-            });
-        } catch (error) {
-            res.status(500).json({ error: "Error fetching products" });
-        }
-    }
-    static async getBrandsList(req, res) {
-        try {
-            const brandList = await BrandsDBServices.getList();
-            res.json(brandList);
-        } catch (error) {
-            res.status(400).json({ error: error.massage });
-        }
-    }
+    //         res.status(200).json({
+    //             data: { documents: productsList, totalNumber: total_count },
+    //         });
+    //     } catch (error) {
+    //         res.status(500).json({ error: "Error fetching products" });
+    //     }
+    // }
+    // static async getBrandsList(req, res) {
+    //     try {
+    //         const brandList = await BrandsDBServices.getList();
+    //         res.json(brandList);
+    //     } catch (error) {
+    //         res.status(400).json({ error: error.massage });
+    //     }
+    // }
+    // static async getProductListWithSearchFilter(req, res) {
+    //     try {
+    //         const filters = {};
+    //         for (const key in req.query) {
+    //             if (req.query[key]) filters[key] = req.query[key];
+    //         }
+    //         const fieldArray = ["title", "rating"];
+    //         const productsList = await ProductDBServices.getProductListWithFilterOptions(filters, fieldArray);
+    //         res.json(productsList);
+    //     } catch (error) {
+    //         res.status(400).json({ error: error.massage });
+    //     }
+    // }
 
     // // Метод для отримання всіх товарів
     // static async getAllProducts(req, res) {
@@ -61,27 +85,19 @@ class ProductController {
     //   }
     // }
     // static async getFiltersData() {}
-    // static async getById(req, res) {
-    //     try {
-    //         const id = req.params.id;
+    static async getById(req, res) {
+        try {
+            const id = req.query.id;
+            if (!id) throw new Error("Id incorrect!");
 
-    //         let item = await ProductsDBService.getById(id, [
-    //             {
-    //                 path: "seller",
-    //                 populate: {
-    //                     path: "type",
-    //                 },
-    //             },
-    //         ]);
+            const item = await ProductDBServices.getProductById(id);
+            if (!item) throw new Error("Item not found!");
 
-    //         res.status(200).json({
-    //             data: item,
-    //             user: req.user,
-    //         });
-    //     } catch (err) {
-    //         res.status(500).json({ error: err.message });
-    //     }
-    // }
+            res.status(200).json(item);
+        } catch (err) {
+            res.status(500).json({ error: err.message });
+        }
+    }
 
     // static async registerForm(req, res) {
     //     try {

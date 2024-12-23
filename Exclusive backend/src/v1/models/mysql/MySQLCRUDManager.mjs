@@ -1,15 +1,15 @@
 import config from "../../../../config/default.mjs";
 class MySQLCRUDManager {
-    constructor(pool, module) {
+    constructor(pool, tableName) {
         this.pool = pool;
-        this.module = module;
+        this.tableName = tableName;
     }
     async getList(projections) {
         try {
             const allowedColumns = await this.getColumnsNameFromTable(projections);
             if (!allowedColumns) throw new Error(`Invalid column name: ${allowedColumns}`);
 
-            const [rows] = await this.pool.query(`SELECT ${allowedColumns} FROM ${this.module};`);
+            const [rows] = await this.pool.query(`SELECT ${allowedColumns} FROM ${this.tableName};`);
             return rows;
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -19,7 +19,7 @@ class MySQLCRUDManager {
 
     async create(data, projections) {
         try {
-            const sql = `INSERT INTO ${this.module} SET ? ;`;
+            const sql = `INSERT INTO ${this.tableName} SET ? ;`;
             const saveResult = await this.pool.query(sql, data);
             if (saveResult.affectedRows === 0) {
                 throw new Error("INSERT INTO");
@@ -41,7 +41,7 @@ class MySQLCRUDManager {
             const allowedColumns = await this.getColumnsNameFromTable(projections);
             if (!allowedColumns) throw new Error(`Invalid column name: ${allowedColumns}`);
 
-            const sql = `SELECT ${allowedColumns} FROM ${this.module} WHERE _id = ?`;
+            const sql = `SELECT ${allowedColumns} FROM ${this.tableName} WHERE _id = ?`;
             const [rows] = await this.pool.query(sql, [id]);
 
             return rows[0] || null;
@@ -53,7 +53,7 @@ class MySQLCRUDManager {
 
     async update(id, data) {
         try {
-            const sql = `UPDATE ${this.module} SET ? WHERE _id = ?`;
+            const sql = `UPDATE ${this.tableName} SET ? WHERE _id = ?`;
             const [result] = await this.pool.query(sql, [data, id]);
             if (result.affectedRows === 0) {
                 return null;
@@ -67,7 +67,7 @@ class MySQLCRUDManager {
 
     async deleteById(id) {
         try {
-            const sql = `DELETE FROM ${this.module} WHERE _id = ?`;
+            const sql = `DELETE FROM ${this.tableName} WHERE _id = ?`;
             const [result] = await this.pool.query(sql, [id]);
             if (result.affectedRows === 0) {
                 return null;
@@ -80,11 +80,11 @@ class MySQLCRUDManager {
     }
     async findOne(params, projections) {
         try {
-            const allowedColumns = await this.getColumnsNameFromTable(projections);
             const columnName = Object.keys(params)[0];
+            const allowedColumns = await this.getColumnsNameFromTable(projections);
             if (!allowedColumns.includes(columnName)) throw new Error(`Invalid column name: ${columnName}`);
 
-            const sql = `SELECT ${allowedColumns} FROM ${this.module} WHERE ${columnName} = ? LIMIT 1`;
+            const sql = `SELECT ${allowedColumns} FROM ${this.tableName} WHERE ${columnName} = ? LIMIT 1`;
 
             const values = [`${params[columnName]}`];
             const [result] = await this.pool.query(sql, values);
@@ -99,8 +99,9 @@ class MySQLCRUDManager {
         }
     }
 
-    async getColumnsNameFromTable(excludedColumn = []) {
+    async getColumnsNameFromTable(excludedColumn = [], tableName) {
         try {
+            const currentTableName = tableName ? tableName : this.tableName;
             const notIncludesColumnNames = excludedColumn.map(() => "?").join(", ");
             const query = `
             SELECT COLUMN_NAME
@@ -109,8 +110,8 @@ class MySQLCRUDManager {
             ${excludedColumn.length ? `AND COLUMN_NAME NOT IN (${notIncludesColumnNames})` : ""};
         `;
             const values = excludedColumn
-                ? [this.module, config.db.mysql.database, "pk", ...excludedColumn]
-                : [this.module, config.db.mysql.database];
+                ? [currentTableName, config.db.mysql.database, "pk", ...excludedColumn]
+                : [currentTableName, config.db.mysql.database];
 
             const [columns] = await this.pool.query(query, values);
 

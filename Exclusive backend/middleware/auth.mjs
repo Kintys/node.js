@@ -16,11 +16,11 @@ const auth = (app) => {
         const openPaths = [
             "/api/v1/auth/login",
             "/api/v1/auth/signup",
-            "/api/v1/products",
-            "/api/v1/products/brands",
+            "/api/v1/filters/catalog",
+            "/api/v1/filters/search",
+            "/api/v1/filters/brands",
             "/api/v1/auth/login/google",
             "/api/v1/auth/google/callback",
-            "/api/v1/products/filters-data",
         ];
 
         // Перевірка, чи шлях потребує авторизації

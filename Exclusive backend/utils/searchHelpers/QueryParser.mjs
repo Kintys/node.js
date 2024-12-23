@@ -116,9 +116,9 @@ class QueryParser {
         ],
         [
             "searchMany",
-            (fieldName, filterValue) => [
+            (fieldName, filterValue, fieldOptions) => [
                 {
-                    fieldName,
+                    fieldName: fieldOptions,
                     filterType: "searchMany",
                     filterContent: filterValue,
                 },
@@ -163,10 +163,10 @@ class QueryParser {
 
     static filtersParser(fieldsConfigurations, query) {
         const filters = [];
-        fieldsConfigurations.forEach(({ fieldName, filterCategory }) => {
+        fieldsConfigurations.forEach(({ fieldName, filterCategory, fieldOptions }) => {
             if (query[fieldName] && QueryParser.filterMethods.has(filterCategory)) {
                 const parseMethod = QueryParser.filterMethods.get(filterCategory);
-                filters.push(...parseMethod(fieldName, query[fieldName]));
+                filters.push(...parseMethod(fieldName, query[fieldName], fieldOptions));
             }
         });
         return filters;

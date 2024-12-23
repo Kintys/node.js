@@ -1,16 +1,20 @@
 import express from "express";
 import ProductController from "../controllers/productController.mjs";
-import FilterService from "../controllers/filtersController.mjs";
+// import CatalogProductsController from "../controllers/catalogProductsController.mjs";
 
-import upload from "../../../middleware/UploadManager.mjs";
+// import upload from "../../../middleware/UploadManager.mjs";
 
 const router = express.Router();
 
-router.get("/filters-data", FilterService.getFiltersData);
-// router.get("/:id", ProductController.getById);
-router.get("/", ProductController.getAllProducts);
-// router.get("/register/:id?", ProductController.registerForm);
-router.get("/brands", ProductController.getBrandsList);
+// router.get("/filters-data", FilterService.getFiltersData);
+router.get("/item?", ProductController.getById);
+// router.get("/catalog", ProductController.getCatalogProductsList);
+// router.get("/", (req, res) => {
+//     res.send("ok");
+// });
+// router.get("/search", ProductController.getProductListWithSearchFilter);
+// // router.get("/register/:id?", ProductController.registerForm);
+// router.get("/brands", ProductController.getBrandsList);
 
 // router.post("/register/:id?", upload.single("image"), ProductController.registerProduct);
 // router.put("/:id", upload.single("image"), ProductController.registerProduct);
