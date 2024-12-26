@@ -27,7 +27,8 @@ class ProductDBServices extends MySQLCRUDManager {
             combined_table.quantity,
             combined_table.rating,
             combined_table.description,
-            combined_table.evaluation
+            combined_table.evaluation,
+            JSON_ARRAY(colors.0, colors.1, colors.2) AS colors
             FROM(${unionQuery}) AS combined_table
             INNER JOIN images ON combined_table.images_id = images._id
             INNER JOIN brands ON combined_table.brands_id = brands._id
@@ -36,7 +37,7 @@ class ProductDBServices extends MySQLCRUDManager {
             LIMIT 1`;
 
             const [results] = await pool.query(query, [id]);
-            const res = { ...results[0], images: JSON.parse(results[0].images) };
+            const res = { ...results[0], images: JSON.parse(results[0].images), colors: JSON.parse(results[0].colors) };
             return res;
         } catch (error) {}
     }

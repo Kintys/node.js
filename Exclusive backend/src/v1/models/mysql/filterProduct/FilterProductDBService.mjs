@@ -1,4 +1,3 @@
-import _config from "../../../../../config/default.mjs";
 import pool from "../../../../../db/connectDB.mjs";
 
 import FiltersMySQLHelper from "../../../../../utils/searchHelpers/FiltersMySQLHelper.mjs";
@@ -68,7 +67,6 @@ class FilterProductDBServices {
             });
             const totalQuery = `SELECT COUNT(*) AS total_count FROM (${query}) AS combined_results;`;
             const [results] = await pool.query(totalQuery);
-
             return results[0];
         } catch (error) {
             console.error("Error:", error);

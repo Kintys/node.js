@@ -102,6 +102,7 @@ class MySQLCRUDManager {
     async getColumnsNameFromTable(excludedColumn = [], tableName) {
         try {
             const currentTableName = tableName ? tableName : this.tableName;
+
             const notIncludesColumnNames = excludedColumn.map(() => "?").join(", ");
             const query = `
             SELECT COLUMN_NAME
@@ -120,6 +121,24 @@ class MySQLCRUDManager {
             console.error("Error in getColumnNameFromTable:", error.message);
             throw error;
         }
+    }
+    async getColumnsCount(excludedColumn = [], tableName) {
+        const currentTableName = tableName ? tableName : this.tableName;
+        const notIncludesColumnNames = excludedColumn.map(() => "?").join(", ");
+        const query = `SELECT COUNT(*) AS column_count
+            FROM INFORMATION_SCHEMA.COLUMNS
+            WHERE TABLE_NAME = ? AND TABLE_SCHEMA = ?
+            ${notIncludesColumnNames.length !== 0 ? `AND COLUMN_NAME NOT IN (${notIncludesColumnNames})` : ""};
+        `;
+        const values =
+            notIncludesColumnNames.length !== 0
+                ? [currentTableName, config.db.mysql.database, ...excludedColumn]
+                : [currentTableName, config.db.mysql.database];
+
+        const [countColumns] = await this.pool.query(query, values);
+        const { column_count } = countColumns[0];
+
+        return parseInt(column_count) ?? 0;
     }
 }
 export default MySQLCRUDManager;

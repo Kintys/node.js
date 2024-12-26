@@ -1,5 +1,6 @@
 import FilterProductDBServices from "../models/mysql/filterProduct/FilterProductDBService.mjs";
 import BrandsDBServices from "../models/mysql/brand/BrandDBServices.mjs";
+import CartDBService from "../models/mysql/cart/CartDBService.mjs";
 class FilterProductController {
     static async getCatalogProductsList(req, res) {
         try {
@@ -21,7 +22,7 @@ class FilterProductController {
             ];
             const { total_count } = await FilterProductDBServices.getTotalPage(filters);
             const productsList = await FilterProductDBServices.getProductListWithFilterOptions(filters, fieldArray);
-
+            CartDBService.addToCartListWithTimer();
             res.status(200).json({
                 data: { documents: productsList, totalNumber: total_count },
             });
