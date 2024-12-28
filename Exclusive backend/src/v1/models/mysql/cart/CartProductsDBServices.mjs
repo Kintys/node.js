@@ -67,6 +67,7 @@ class CartProductsListDBServices extends MySQLCRUDManager {
 
             const values = [cartProductsListId, ...productId];
             const [result] = await pool.query(sqlQuery, values);
+            console.log(result);
             if (result.affectedRows === 0) throw new Error("Products are not added!");
 
             return cartProductsListId;
@@ -106,9 +107,41 @@ class CartProductsListDBServices extends MySQLCRUDManager {
         const fixedProductsString = result[0].products.replace(/,\s*]$/, "]");
         return JSON.parse(fixedProductsString);
     }
-    async getFullProductListFromCartProductsList() {
-        const cartProductId = getProductIdFromCartProductsList(cartProductId);
-        const product = await ProductDBService.getProductById();
+
+    async getProductDetailsFromCart(productIds) {
+        return await ProductDBService.getProductsListByIdList(productIds, [
+            "_id AS productId",
+            "title",
+            "images.image_1 AS image",
+            "quantity",
+            "newPrice AS price",
+        ]);
+    }
+
+    async mergeCartWithProductDetails(cartProductList, productDetails) {
+        const cartProductMap = new Map(cartProductList.map((cartItem) => [cartItem.productId, cartItem]));
+        return productDetails
+            .map((product) => {
+                const matchingCartItem = cartProductMap.get(product.productId);
+                if (matchingCartItem) {
+                    return {
+                        ...product,
+                        ...matchingCartItem,
+                    };
+                }
+                return null;
+            })
+            .filter((item) => item !== null);
+    }
+
+    async getFullProductListFromCartProductsList(cartProductId) {
+        const cartProductList = await this.getProductIdFromCartProductsList(cartProductId);
+        const productIds = cartProductList.map((product) => product.productId);
+
+        const productDetails = await this.getProductDetailsFromCart(productIds);
+
+        const fullProductList = await this.mergeCartWithProductDetails(cartProductList, productDetails);
+        return fullProductList;
     }
 }
 

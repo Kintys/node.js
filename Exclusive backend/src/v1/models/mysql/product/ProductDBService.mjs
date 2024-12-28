@@ -37,9 +37,39 @@ class ProductDBServices extends MySQLCRUDManager {
             LIMIT 1`;
 
             const [results] = await pool.query(query, [id]);
-            const res = { ...results[0], images: JSON.parse(results[0].images), colors: JSON.parse(results[0].colors) };
-            return res;
+            const parsedArray = {
+                ...results[0],
+                images: JSON.parse(results[0].images),
+                colors: JSON.parse(results[0].colors),
+            };
+            return parsedArray;
         } catch (error) {}
+    }
+    async getProductsListByIdList(idList, fieldsList = "*") {
+        try {
+            const unionQuery = await this.getUnionQuery(ProductDBServices.tableNames);
+            if (!unionQuery) throw new Error("Error");
+
+            const selectFields = fieldsList
+                .map((field) => (!field.includes("image") ? `combined_table.${field}` : field))
+                .join(", ");
+
+            const placeholders = idList.map(() => "?").join(", ");
+
+            const sqlQuery = `SELECT ${selectFields} 
+            FROM (${unionQuery}) AS combined_table
+            LEFT JOIN images ON combined_table.images_id = images._id
+            WHERE combined_table._id IN (${placeholders})`;
+            const values = idList;
+
+            const [results] = await pool.query(sqlQuery, values);
+
+            if (results.length === 0) throw new Error("Products on found!");
+
+            return results;
+        } catch (error) {
+            console.error(error.massage);
+        }
     }
 }
 

@@ -34,22 +34,75 @@ const order = {
         },
     ],
 };
-const cartId = "5aded840-c3b7-11ef-8b7f-6708c7979370";
+const id = "ee3fce5c-16cd-4fe6-87ba-b1b49030a7c8";
 
 class CartDBService extends MySQLCRUDManager {
-    async addToCartListWithTimer() {
-        const cartProductId = await CartProductsListDBServices.addProductListToCartProductsList(order.cartProductList);
-        const sqlQuery = `INSERT INTO cart (_id, cartProducts_id, email)
+    async getCartListById(cartId) {
+        try {
+            const userCart = await super.getById(cartId);
+            if (!userCart) throw new Error("User cart not found!");
+
+            const cartProduct = await CartProductsListDBServices.getFullProductListFromCartProductsList(
+                userCart.cartProducts_id
+            );
+
+            if (!cartProduct.length !== 0) throw new Error("Cart products not found!");
+
+            return {
+                orderId: userCart._id,
+                cartProductList: [...cartProduct],
+                email: userCart.email,
+            };
+        } catch (error) {
+            console.error(error.massage);
+        }
+    }
+    async addToCartList(userCart) {
+        try {
+            const cartProductId = await CartProductsListDBServices.addProductListToCartProductsList(
+                userCart.cartProductList
+            );
+
+            if (!cartProductId) throw new Error("Cart Product Id not added!");
+
+            const sqlQuery = `INSERT INTO cart (_id, cartProducts_id, email)
             VALUES (?, ?, ?);`;
-        const values = [order.orderId, cartProductId, order.email];
-        const results = await pool.query(sqlQuery, values);
-        // this.deleteOrderToCartList(cartId, order.cartProductList);
+
+            const values = [userCart.orderId, cartProductId, userCart.email];
+            const results = await pool.query(sqlQuery, values);
+
+            if (results.insertId === 0) throw new Error("Order not added!");
+
+            return true;
+        } catch (error) {
+            console.error(error.massage);
+            return false;
+        }
     }
 
-    async deleteOrderToCartList(cartId, productList) {
-        const productListId = productList.map((product) => product.productId);
-        CartProductsStorageDBServices.deleteProductFromCartProductsStorage(productListId);
-        // const r = super.deleteById(cartId);
+    async deleteOrderToCartList(cartId) {
+        try {
+            const userCart = await super.getById(cartId);
+            if (!userCart) throw new Error("User cart not found!");
+
+            const cartProduct = await CartProductsListDBServices.getFullProductListFromCartProductsList(
+                userCart.cartProducts_id
+            );
+
+            const cartProductIdList = cartProduct.map((product) => product.productId);
+
+            if (!cartProduct.length !== 0) throw new Error("Cart products not found!");
+
+            const deleteStatus = await CartProductsStorageDBServices.deleteProductFromCartProductsStorage(
+                cartProductIdList
+            );
+
+            if (!deleteStatus) throw new Error("No record found to delete!");
+
+            return await super.deleteById(cartId);
+        } catch (error) {
+            console.error(error.massage);
+        }
     }
 }
 

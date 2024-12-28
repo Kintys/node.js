@@ -27,15 +27,23 @@ class CartProductsStorageDBServices extends MySQLCRUDManager {
         return results;
     }
     async deleteProductFromCartProductsStorage(productIdList) {
-        const storagesProductId = await this.getStorageCartId(productIdList);
+        try {
+            const storagesProductId = await this.getStorageCartId(productIdList);
 
-        const ids = storagesProductId.map((cart) => cart._id);
+            const values = storagesProductId.map((cart) => cart._id);
 
-        const placeholders = storagesProductId.map(() => "?").join(", ");
+            const placeholders = storagesProductId.map(() => "?").join(", ");
 
-        const sqlQuery = `DELETE FROM cart_products_storage
+            const sqlQuery = `DELETE FROM cart_products_storage
         WHERE _id IN(${placeholders})`;
-        const results = await pool.query(sqlQuery, ids);
+            const results = await pool.query(sqlQuery, values);
+            if (results.affectedRows === 0) throw new Error("No record found to delete!");
+
+            return true;
+        } catch (error) {
+            console.error(error.massage);
+            return false;
+        }
     }
 }
 export default new CartProductsStorageDBServices(pool, "cart_products_storage");

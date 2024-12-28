@@ -34,6 +34,7 @@ class MySQLCRUDManager {
 
     async getById(id, projections) {
         try {
+            console.log(id);
             if (!id) {
                 throw new Error("Invalid ID provided");
             }
