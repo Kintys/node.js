@@ -13,11 +13,7 @@ class CartProductsListDBServices extends MySQLCRUDManager {
             const addColumnQueries = [];
 
             for (let index = 0; index < newColumnsRequired; index++) {
-                addColumnQueries.push(`ADD product_${nextColumnIndex}  VARCHAR(36) NULL,
-                                                ADD CONSTRAINT fk_product_${nextColumnIndex}
-                                                FOREIGN KEY (product_${nextColumnIndex})
-                                                REFERENCES cart_products_storage(_id)
-                                                ON DELETE CASCADE ON UPDATE CASCADE`);
+                addColumnQueries.push(`ADD product_${nextColumnIndex}  VARCHAR(36) NULL`);
                 nextColumnIndex++;
             }
 
@@ -67,7 +63,6 @@ class CartProductsListDBServices extends MySQLCRUDManager {
 
             const values = [cartProductsListId, ...productId];
             const [result] = await pool.query(sqlQuery, values);
-            console.log(result);
             if (result.affectedRows === 0) throw new Error("Products are not added!");
 
             return cartProductsListId;

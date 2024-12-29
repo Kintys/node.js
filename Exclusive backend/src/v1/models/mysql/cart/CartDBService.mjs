@@ -58,28 +58,47 @@ class CartDBService extends MySQLCRUDManager {
         }
     }
     async addToCartList(userCart) {
+        // this.createForeignKey(userCart.cartProductList);
         try {
             const cartProductId = await CartProductsListDBServices.addProductListToCartProductsList(
                 userCart.cartProductList
             );
-
             if (!cartProductId) throw new Error("Cart Product Id not added!");
-
             const sqlQuery = `INSERT INTO cart (_id, cartProducts_id, email)
             VALUES (?, ?, ?);`;
-
             const values = [userCart.orderId, cartProductId, userCart.email];
             const results = await pool.query(sqlQuery, values);
-
             if (results.insertId === 0) throw new Error("Order not added!");
-
+            // await this.createForeignKey(userCart.cartProductList);
             return true;
         } catch (error) {
             console.error(error.massage);
             return false;
         }
     }
+    async createForeignKey(productsList) {
+        const arr1 = productsList.map(
+            (item, number) =>
+                ` ALTER TABLE cart_products_storage\n ADD CONSTRAINT fk_product_list_${number} FOREIGN KEY (_id) REFERENCES cart_products_list(product_${number}) ON DELETE CASCADE ON UPDATE CASCADE;`
+        );
+        const arr2 = productsList.map(
+            (item, number) =>
+                ` ALTER TABLE cart_products_list\n ADD CONSTRAINT fk_cart_product_list_${number} FOREIGN KEY (product_(8)) REFERENCES cart_products_list(product_${number}) ON DELETE CASCADE ON UPDATE CASCADE;`
+        );
+        let sqlQuery = `
+        ALTER TABLE cart 
+        ADD CONSTRAINT fk_cart_cpl1 FOREIGN KEY (cartProducts_id) REFERENCES cart_products_list(_id) ON DELETE CASCADE ON UPDATE CASCADE;
 
+        ALTER TABLE cart_products_list
+        ADD CONSTRAINT fk_cart_products_cl1 FOREIGN KEY (_id) REFERENCES cart(cartProducts_id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+        ${arr1.join("\n").trim()}
+`;
+
+        console.log(sqlQuery);
+        const result = await pool.query(sqlQuery);
+        console.log(result);
+    }
     async deleteOrderToCartList(cartId) {
         try {
             const userCart = await super.getById(cartId);

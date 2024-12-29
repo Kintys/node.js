@@ -23,7 +23,7 @@ class CartController {
             const userCart = req.body;
             if (!userCart) throw new Error("Cart data is required!");
 
-            // await CartDBService.deleteOrderToCartList(userCart.orderId, userCart.cartProductList);
+            await CartDBService.deleteOrderToCartList(userCart.orderId, userCart.cartProductList);
 
             const resultStatus = await CartDBService.addToCartList(userCart);
 

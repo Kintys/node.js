@@ -25,6 +25,7 @@ async function connectToMySQL() {
             user: config.db.mysql.user,
             password: config.db.mysql.password,
             database: config.db.mysql.database,
+            multipleStatements: true,
         });
         console.log("Успішно підключено до MySQL");
         return pool;
