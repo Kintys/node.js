@@ -1,6 +1,7 @@
 import _config from "../../../../../config/default.mjs";
 import pool from "../../../../../db/connectDB.mjs";
 import MySQLCRUDManager from "../MySQLCRUDManager.mjs";
+import { v1 as uuidv1 } from "uuid";
 
 class ProductDBServices extends MySQLCRUDManager {
     static tableNames = ["gamepads", "pcs", "laptops", "headphones"];
@@ -70,6 +71,35 @@ class ProductDBServices extends MySQLCRUDManager {
         } catch (error) {
             console.error(error.massage);
         }
+    }
+    async createNewProduct(data, tableName) {
+        try {
+            const imagesId = await this.createNewImages(data.images);
+            if (!imagesId) throw new Error("Images is not added!");
+            const values = { _id: uuidv1() };
+            for (const key in data) {
+                if (key === "images") {
+                    values["images_id"] = imagesId;
+                } else {
+                    values[key] = data[key];
+                }
+            }
+            const sqlQuery = `INSERT INTO ${tableName} (${Object.keys(values).join(", ")}) VALUES (${Object.keys(values)
+                .map(() => "?")
+                .join(", ")})`;
+            const [result] = await pool.query(sqlQuery, Object.values(values));
+            if (!result.imagesId) throw new Error("Product id not added!");
+            return true;
+        } catch (error) {
+            console.error(error.massage);
+        }
+    }
+    async createNewImages(images) {
+        const sqlQuery = `INSERT INTO images (Image_1, Image_2, Image_3, Image_4) VALUE (?,?,?,?)`;
+        const values = images;
+
+        const [result] = await pool.query(sqlQuery, values);
+        return result.insertId;
     }
 }
 

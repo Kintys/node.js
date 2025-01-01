@@ -1,8 +1,9 @@
 import express from "express";
 import ProductController from "../controllers/productController.mjs";
 // import CatalogProductsController from "../controllers/catalogProductsController.mjs";
-
-// import upload from "../../../middleware/UploadManager.mjs";
+import { checkSchema } from "express-validator";
+import validationSchema from "../../../validators/productValidator.mjs";
+import upload from "../../../middleware/UploadManager.mjs";
 
 const router = express.Router();
 
@@ -16,8 +17,9 @@ router.get("/item?", ProductController.getById);
 // // router.get("/register/:id?", ProductController.registerForm);
 // router.get("/brands", ProductController.getBrandsList);
 
-// router.post("/register/:id?", upload.single("image"), ProductController.registerProduct);
+router.post("/add", upload.array("images", 5), validationSchema, ProductController.registerProduct);
 // router.put("/:id", upload.single("image"), ProductController.registerProduct);
 // router.delete("/", ProductController.deleteProduct);
 
 export default router;
+//  checkSchema(ProductValidator.productSchema),
