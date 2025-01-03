@@ -1,68 +1,4 @@
 import { body } from "express-validator";
-// class ProductValidator {
-//     static productSchema = {
-//         "data.title": {
-//             in: ["body"],
-//             isString: true,
-//             notEmpty: {
-//                 errorMessage: "Product title is required",
-//             },
-//             trim: true,
-//             escape: true,
-//         },
-//         discount: {
-//             in: ["body"],
-//             trim: true,
-//             escape: true,
-//         },
-//         brand: {
-//             in: ["body"],
-//             isString: true,
-//             notEmpty: {
-//                 errorMessage: "Brand is required",
-//             },
-//             trim: true,
-//             escape: true,
-//         },
-//         oldPrice: {
-//             in: ["body"],
-//             trim: true,
-//             escape: true,
-//         },
-//         newPrice: {
-//             in: ["body"],
-//             isNumeric: { errorMessage: "Must be number value" },
-//             isInt: { min: 1 },
-//             trim: true,
-//             escape: true,
-//         },
-//         description: {
-//             in: ["body"],
-//             isString: true,
-//             isLength: {
-//                 options: { min: 10 },
-//                 errorMessage: "Description must be at least 10 characters long",
-//             },
-//             trim: true,
-//             escape: true,
-//         },
-//         evaluation: {
-//             in: ["body"],
-//             isNumeric: { errorMessage: "Must be number value" },
-//             isInt: { min: 1 },
-//             trim: true,
-//             escape: true,
-//         },
-//         images: {
-//             custom: {
-//                 options: (value, { req }) => {
-//                     if (req.files.length < 4) throw new Error("You must upload at least 4 images");
-//                 },
-//             },
-//         },
-//     };
-// }
-// export default ProductValidator;
 const validationSchema = [
     body("data.title")
         .isString()
@@ -72,7 +8,7 @@ const validationSchema = [
         .trim()
         .escape(),
     body("data.discount").optional().trim().escape(),
-    body("data.brand")
+    body("data.brands_id")
         .isString()
         .withMessage("Brand must be a string")
         .notEmpty()

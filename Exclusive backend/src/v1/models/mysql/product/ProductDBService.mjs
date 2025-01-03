@@ -87,8 +87,10 @@ class ProductDBServices extends MySQLCRUDManager {
             const sqlQuery = `INSERT INTO ${tableName} (${Object.keys(values).join(", ")}) VALUES (${Object.keys(values)
                 .map(() => "?")
                 .join(", ")})`;
-            const [result] = await pool.query(sqlQuery, Object.values(values));
-            if (!result.imagesId) throw new Error("Product id not added!");
+
+            const result = await pool.query(sqlQuery, Object.values(values));
+            if (result.insertId === 0) throw new Error("Product id not added!");
+
             return true;
         } catch (error) {
             console.error(error.massage);

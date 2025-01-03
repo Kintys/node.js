@@ -133,15 +133,14 @@ class ProductController {
             }
 
             const imagesUrl = await ProductController.createUrlImage(req);
-            // const productData = JSON.parse(req.body.data);
+            const productData = req.body.data;
+            const category = req.body.category;
 
-            // if (imagesUrl.length !== 0) {
-            //     productData.images = imagesUrl;
-            // }
-            // const category = JSON.parse(req.body.category);
+            if (imagesUrl.length !== 0) {
+                productData.images = imagesUrl;
+            }
 
-            // const res = await ProductDBServices.createNewProduct(productData, category);
-            // console.log(res);
+            const answer = await ProductDBServices.createNewProduct(productData, category);
             // if (req.params.id) {
             //     await ProductsDBService.update(req.params.id, productData);
             // } else {
@@ -149,7 +148,7 @@ class ProductController {
             //     await ProductsDBService.create(productData);
             // }
 
-            res.status(200).json({ message: "ok" });
+            res.status(200).json({ message: answer });
         } catch (err) {
             res.status(500).json({ errors: errors.mapped() });
         }
