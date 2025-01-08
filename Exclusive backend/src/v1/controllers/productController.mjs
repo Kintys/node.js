@@ -6,33 +6,6 @@ import fs from "fs/promises";
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
 class ProductController {
-    static async getAllProducts(req, res) {
-        try {
-            // if (!req.user) {
-            //     return res.status(403).json({ error: "Access denied" });
-            // }
-            const filters = {};
-            for (const key in req.query) {
-                if (req.query[key]) filters[key] = req.query[key];
-            }
-            const fieldArray = [
-                "title",
-                "image_1 AS image",
-                "discount",
-                "brands.name AS brand",
-                "newPrice",
-                "quantity",
-            ];
-            const { total_count } = await ProductDBServices.getTotalPage(filters);
-            const productsList = await ProductDBServices.getProductListWithFilterOptions(filters, fieldArray);
-            res.status(200).json({
-                data: { documents: productsList, totalNumber: total_count },
-            });
-        } catch (error) {
-            res.status(500).json({ error: "Error fetching products" });
-        }
-    }
-
     static async getById(req, res) {
         try {
             // if (!req.user) {

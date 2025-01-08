@@ -10,38 +10,40 @@ const auth = (app) => {
         next(); // Передача обробки наступному middleware
     });
 
-    // Middleware для перевірки аутентифікації та авторизації
-    // app.use((req, res, next) => {
-    //     // Відкриті шляхи, які не потребують авторизації
-    //     const openPaths = [
-    //         "/api/v1/auth/login",
-    //         "/api/v1/auth/signup",
-    //         "/api/v1/products/add",
-    //         "/api/v1/filters/catalog",
-    //         "/api/v1/filters/search",
-    //         "/api/v1/filters/brands",
-    //         "/api/v1/auth/login/google",
-    //         "/api/v1/auth/google/callback",
-    //     ];
+    //     // Middleware для перевірки аутентифікації та авторизації
+    app.use((req, res, next) => {
+        // Відкриті шляхи, які не потребують авторизації
+        const openPaths = [
+            "/api/v1/auth/login",
+            "/api/v1/auth/signup",
+            "/api/v1/products/add",
+            "/api/v1/products/pcs",
+            "/api/v1/products/laptops",
+            "/api/v1/products/headphones",
+            "/api/v1/filters/search",
+            "/api/v1/filters/brands",
+            "/api/v1/auth/login/google",
+            "/api/v1/auth/google/callback",
+        ];
 
-    //     const dynamicPaths = [/^\/api\/v1\/images\/.+$/, /^\/api\/v1\/uploads\/.+$/];
+        const dynamicPaths = [/^\/api\/v1\/images\/.+$/, /^\/api\/v1\/uploads\/.+$/];
 
-    //     const isOpenPath = (path) => {
-    //         return openPaths.includes(path) || dynamicPaths.some((regex) => regex.test(path));
-    //     };
+        const isOpenPath = (path) => {
+            return openPaths.includes(path) || dynamicPaths.some((regex) => regex.test(path));
+        };
 
-    //     // Перевірка, чи шлях потребує авторизації
-    //     if (!isOpenPath(req.path)) {
-    //         try {
-    //             // Парсинг токена та додавання користувача до запиту
-    //             req.user = parseBearer(req.headers.authorization, req.headers);
-    //         } catch (err) {
-    //             // Якщо авторизація не вдалася, повертається статус 401
-    //             return res.status(401).json({ result: "Access Denied" });
-    //         }
-    //     }
-    //     next(); // Передача обробки наступному middleware
-    // });
+        // Перевірка, чи шлях потребує авторизації
+        if (!isOpenPath(req.path)) {
+            try {
+                // Парсинг токена та додавання користувача до запиту
+                req.user = parseBearer(req.headers.authorization, req.headers);
+            } catch (err) {
+                // Якщо авторизація не вдалася, повертається статус 401
+                return res.status(401).json({ result: "Access Denied" });
+            }
+        }
+        next(); // Передача обробки наступному middleware
+    });
 };
 
 // Експорт функції auth як модуля за замовчуванням

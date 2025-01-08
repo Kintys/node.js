@@ -7,20 +7,9 @@ class FilterProductController {
             for (const key in req.query) {
                 if (req.query[key]) filters[key] = req.query[key];
             }
-            const fieldArray = [
-                "title",
-                "image_1 AS image",
-                "discount",
-                "brands.name AS brand",
-                "oldPrice",
-                "newPrice",
-                "quantity",
-                "rating",
-                "description",
-                "evaluation",
-            ];
+
             const { total_count } = await FilterProductDBServices.getTotalPage(filters);
-            const productsList = await FilterProductDBServices.getProductListWithFilterOptions(filters, fieldArray);
+            const productsList = await FilterProductDBServices.getProductListWithFilterOptions(filters);
             res.status(200).json({
                 data: { documents: productsList, totalNumber: total_count },
             });

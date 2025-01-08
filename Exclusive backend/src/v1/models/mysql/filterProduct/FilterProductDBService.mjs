@@ -2,6 +2,18 @@ import pool from "../../../../../db/connectDB.mjs";
 
 import FiltersMySQLHelper from "../../../../../utils/searchHelpers/FiltersMySQLHelper.mjs";
 class FilterProductDBServices {
+    static fields = [
+        "title",
+        "image_1 AS image",
+        "discount",
+        "brands.name AS brand",
+        "oldPrice",
+        "newPrice",
+        "quantity",
+        "rating",
+        "description",
+        "evaluation",
+    ];
     static fieldsConfigurations = [
         {
             fieldName: "search",
@@ -44,9 +56,10 @@ class FilterProductDBServices {
             tableNames: FilterProductDBServices.tableNames,
         };
     }
-    async getProductListWithFilterOptions(reqQuery, fieldArray) {
+    async getProductListWithFilterOptions(reqQuery) {
         try {
-            const queryBaseConfig = await this.getQueryBaseConfig(fieldArray);
+            const fieldsToSelect = FilterProductDBServices.fields;
+            const queryBaseConfig = await this.getQueryBaseConfig(fieldsToSelect);
             const { query, combinedParameters } = await FiltersMySQLHelper.applyFindOptionsFromQuery(
                 reqQuery,
                 FilterProductDBServices.fieldsConfigurations,

@@ -3,14 +3,10 @@ import CartDBService from "../models/mysql/cart/CartDBService.mjs";
 class CartController {
     static async loadCartListById(req, res) {
         try {
-            const id = req.params.orderId;
+            const id = req.query.orderId;
             if (!id) throw new Error("Order ID is required!");
 
             const cartList = await CartDBService.getCartListById(id);
-
-            if (!cartList) {
-                return res.status(200).json({});
-            }
 
             res.status(200).json(cartList);
         } catch (error) {

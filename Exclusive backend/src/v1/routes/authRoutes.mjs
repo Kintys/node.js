@@ -5,7 +5,6 @@ import AuthController from "../controllers/authController.mjs";
 const router = express.Router();
 
 router.post("/signup", AuthController.signup);
-// router.get("/login", AuthController.login);
 router.get(
     "/login/google",
     passport.authenticate("google", {
@@ -27,9 +26,8 @@ router.post(
     // }),
     AuthController.login
 );
-router.get("/login", AuthController.login);
 
-router.get("/login/fail", AuthController.unLogin);
+// router.get("/login/fail", AuthController.unLogin);
 
 router.get("/google/callback", passport.authenticate("google", { authInfo: false }), AuthController.sendToken);
 router.get("/user", AuthController.loginWithGoogle);

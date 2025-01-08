@@ -1,38 +1,34 @@
-import express from 'express'
-import passport from 'passport'
+import express from "express";
+import passport from "passport";
+import AuthController from "../controllers/authController.mjs";
 
-const router = express.Router()
+const router = express.Router();
 
-// Маршрут для відображення форми логіну
-router.get('/login', (req, res) => {
-  res.render('login', { messages: null })
-})
+router.post("/signup", AuthController.signup);
+router.get(
+    "/login/google",
+    passport.authenticate("google", {
+        access_type: "offline",
+        scope: ["email", "profile"],
+    })
+);
 
-// Маршрут для обробки логіну
 router.post(
-  '/login',
-  (req, res, next) => {
-    next()
-  },
-  passport.authenticate('local', {
-    // successRedirect: '/users',
-    failureRedirect: '/auth/login',
-    // failureRedirect: '/',
-    // failureFlash: true,
-  }),
-  function (req, res) {
-    res.redirect('/')
-  }
-)
+    "/login",
+    (req, res, next) => {
+        next();
+    },
+    // passport.authenticate("local", {
+    //     // successRedirect: '/users',
+    //     failureRedirect: "/auth/login/fail",
+    //     // failureRedirect: '/',
+    //     // failureFlash: true,
+    // }),
+    AuthController.login
+);
 
-// Маршрут для виходу з системи
-router.get('/logout', (req, res) => {
-  req.logout((err) => {
-    if (err) {
-      return next(err)
-    }
-    res.redirect('/')
-  })
-})
+// router.get("/login/fail", AuthController.unLogin);
 
-export default router
+router.get("/google/callback", passport.authenticate("google", { authInfo: false }), AuthController.sendToken);
+router.get("/user", AuthController.loginWithGoogle);
+export default router;

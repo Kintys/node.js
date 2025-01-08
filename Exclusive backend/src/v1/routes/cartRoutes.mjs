@@ -3,7 +3,7 @@ import CartController from "../controllers/cartController.mjs";
 
 const router = express.Router();
 
-// router.get("/", CartController.loadCartListById);
+router.get("/:orderId?", CartController.loadCartListById);
 
 router.post("/save", CartController.saveCartList);
 

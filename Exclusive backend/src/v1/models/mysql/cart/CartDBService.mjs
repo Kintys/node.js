@@ -45,9 +45,6 @@ class CartDBService extends MySQLCRUDManager {
             const cartProduct = await CartProductsListDBServices.getFullProductListFromCartProductsList(
                 userCart.cartProducts_id
             );
-
-            if (!cartProduct.length !== 0) throw new Error("Cart products not found!");
-
             return {
                 orderId: userCart._id,
                 cartProductList: [...cartProduct],

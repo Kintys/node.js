@@ -5,7 +5,17 @@ import { v1 as uuidv1 } from "uuid";
 
 class ProductDBServices extends MySQLTableManager {
     static tableNames = ["gamepads", "pcs", "laptops", "headphones"];
-    static fieldsCardList = ["title", "image_1 AS image", "discount", "oldPrice", "newPrice", "quantity", "rating"];
+    static fieldsCardList = [
+        "_id",
+        "title",
+        "image_1 AS image",
+        "discount",
+        "oldPrice",
+        "newPrice",
+        "quantity",
+        "rating",
+        "evaluation",
+    ];
     async getUnionQuery(tableNames) {
         const queryParts = await Promise.all(
             tableNames.map(async (tableName) => {
@@ -20,9 +30,12 @@ class ProductDBServices extends MySQLTableManager {
         try {
             if (!tableName) throw new Error("Table is incorrect!");
 
-            const fields = ProductDBServices.fieldsCardList.join(", ");
-            const sqlQuery = `SELECT ${fields} FROM ${tableName}
-            LEFT JOIN images ON ${tableName}.images_id = images._id`;
+            const selectFields = ProductDBServices.fieldsCardList
+                .map((field) => (!field.includes("image") ? `${tableName}.${field}` : field))
+                .join(", ");
+            const sqlQuery = `SELECT ${selectFields} FROM ${tableName}
+            LEFT JOIN images ON ${tableName}.images_id = images._id
+            LIMIT 10`;
 
             const [results] = await pool.execute(sqlQuery);
             return results;
@@ -55,8 +68,8 @@ class ProductDBServices extends MySQLTableManager {
             const [results] = await pool.query(query, [id]);
             const parsedArray = {
                 ...results[0],
-                images: JSON.parse(results[0].images),
-                colors: JSON.parse(results[0].colors),
+                // images: JSON.parse(results[0].images),
+                // colors: JSON.parse(results[0].colors),
             };
             return parsedArray;
         } catch (error) {

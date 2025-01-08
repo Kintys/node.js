@@ -19,7 +19,7 @@ class MySQLCRUDManager {
 
     async create(data, projections) {
         try {
-            const sql = `INSERT INTO ${this.tableName} SET ? ;`;
+            const sql = `INSERT INTO ${this.tableName} SET ? `;
             const saveResult = await this.pool.query(sql, data);
             if (saveResult.affectedRows === 0) {
                 throw new Error("INSERT INTO");
@@ -34,7 +34,6 @@ class MySQLCRUDManager {
 
     async getById(id, projections) {
         try {
-            console.log(id);
             if (!id) {
                 throw new Error("Invalid ID provided");
             }
