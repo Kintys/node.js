@@ -68,8 +68,8 @@ class ProductDBServices extends MySQLTableManager {
             const [results] = await pool.query(query, [id]);
             const parsedArray = {
                 ...results[0],
-                images: JSON.parse(results[0].images),
-                colors: JSON.parse(results[0].colors),
+                // images: JSON.parse(results[0].images),
+                // colors: JSON.parse(results[0].colors),
             };
             return parsedArray;
         } catch (error) {
