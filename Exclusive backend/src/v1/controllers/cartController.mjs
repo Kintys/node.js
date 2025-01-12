@@ -16,10 +16,10 @@ class CartController {
 
     static async saveCartList(req, res) {
         try {
-            const userCart = req.body;
+            const userCart = JSON.parse(req.body);
             if (!userCart) throw new Error("Cart data is required!");
 
-            await CartDBService.deleteOrderToCartList(userCart.orderId, userCart.cartProductList);
+            // await CartDBService.deleteOrderToCartList(userCart.orderId, userCart.cartProductList);
 
             const resultStatus = await CartDBService.addToCartList(userCart);
 
@@ -39,7 +39,7 @@ class CartController {
 
             // if (!cartId || !cartProductIds) throw new Error("Cart ID and product IDs are required!");
 
-            const deleteStatus = await CartDBService.deleteOrderToCartList(req.query.orderId);
+            // const deleteStatus = await CartDBService.deleteOrderToCartList(req.query.orderId);
 
             // if (!deleteStatus) throw new Error("No records found to delete!");
             //deleteStatus

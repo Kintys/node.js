@@ -56,6 +56,7 @@ class AuthController {
                         id: user._id,
                         username: user.username,
                         email: user.email,
+                        isAdmin: user.isAdmin,
                     },
                     token,
                 });
@@ -65,8 +66,8 @@ class AuthController {
         })(req, res, next);
     }
     static async unLogin(req, res) {
-        console.log("unlogin");
-        console.log(req);
+        // console.log("unlogin");
+        // console.log(req);
     }
     static async sendToken(req, res) {
         try {
@@ -87,18 +88,8 @@ class AuthController {
     }
     static async loginWithGoogle(req, res) {
         try {
-            // if (!req.user) {
-            //     res.json({ err: "error" });
-            // }
-
             const user = await UsersDBService.getUserProfileByIdWithOutPassword({ _id: req.user.id });
-            // const token = prepareToken(
-            //     {
-            //         id: req.user._id,
-            //         username: req.user.username,
-            //     },
-            //     req.headers
-            // );
+
             res.json({ user });
         } catch (error) {
             res.json({ msg: "error" });

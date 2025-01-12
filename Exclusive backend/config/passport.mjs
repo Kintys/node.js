@@ -4,8 +4,6 @@ import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import bcrypt from "bcryptjs";
 
-// import User from "../models/user/User.mjs";
-// import UsersDBService from "../src/v1/models/user/UsersDBService.mjs";
 import UsersDBService from "../src/v1/models/mysql/user/UsersDBService.mjs";
 // Налаштування локальної стратегії
 passport.use(
@@ -36,7 +34,6 @@ passport.use(
         async function (request, accessToken, refreshToken, profile, done) {
             try {
                 let user = await UsersDBService.findUserByEmail({ email: profile["emails"][0].value });
-                // let user = await UsersDBService.findOne({ email: profile["emails"][0].value }, { password: 0 });
                 if (!user) {
                     user = await UsersDBService.createNewAccountWithGoogleProfile({
                         email: profile["emails"][0].value,

@@ -8,9 +8,9 @@ import { v4 as uuidv4 } from "uuid";
 class ProductController {
     static async getById(req, res) {
         try {
-            // if (!req.user) {
-            //     return res.status(403).json({ error: "Access denied" });
-            // }
+            if (!req.user) {
+                return res.status(403).json({ error: "Access denied" });
+            }
             const id = req.query.id;
             if (!id) throw new Error("Id incorrect!");
 
@@ -34,9 +34,9 @@ class ProductController {
 
     static async registerProduct(req, res) {
         try {
-            // if (!req.user) {
-            //     return res.status(403).json({ error: "Access denied" });
-            // }
+            if (!req.user) {
+                return res.status(403).json({ error: "Access denied" });
+            }
 
             const errors = validationResult(req);
 

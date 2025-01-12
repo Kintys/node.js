@@ -7,7 +7,7 @@ import cors from "cors";
 import passport from "../config/passport.mjs";
 import sessionConfig from "../config/session.mjs";
 import auth from "./auth.mjs";
-
+import bodyParser from "body-parser";
 // Визначення поточного файлу і директорії
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -21,6 +21,8 @@ const middleware = (app) => {
 
     // Middleware для логування запитів
     app.use(loggerConfig);
+
+    app.use(bodyParser.text({ type: "text/plain" }));
 
     // Middleware для парсингу JSON запитів
     // Express 4.0

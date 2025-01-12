@@ -55,7 +55,6 @@ class CartDBService extends MySQLCRUDManager {
         }
     }
     async addToCartList(userCart) {
-        // this.createForeignKey(userCart.cartProductList);
         try {
             const cartProductId = await CartProductsListDBServices.addProductListToCartProductsList(
                 userCart.cartProductList
@@ -66,7 +65,6 @@ class CartDBService extends MySQLCRUDManager {
             const values = [userCart.orderId, cartProductId, userCart.email];
             const results = await pool.query(sqlQuery, values);
             if (results.insertId === 0) throw new Error("Order not added!");
-            // await this.createForeignKey(userCart.cartProductList);
             return true;
         } catch (error) {
             console.error(error.massage);

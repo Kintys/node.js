@@ -16,7 +16,7 @@ const auth = (app) => {
         const openPaths = [
             "/api/v1/auth/login",
             "/api/v1/auth/signup",
-            "/api/v1/products/add",
+            "/api/v1/cart/save",
             "/api/v1/products/pcs",
             "/api/v1/products/laptops",
             "/api/v1/products/headphones",
