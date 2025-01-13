@@ -28,7 +28,7 @@ passport.use(
         {
             clientID: config.clientGoogleId,
             clientSecret: config.clientGoogleSecret,
-            callbackURL: "http://localhost:3000/api/v1/auth/google/callback",
+            callbackURL: "https://exclusive-ed8a.onrender.com/api/v1/auth/google/callback",
             passReqToCallback: true,
         },
         async function (request, accessToken, refreshToken, profile, done) {
