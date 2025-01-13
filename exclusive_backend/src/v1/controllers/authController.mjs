@@ -72,7 +72,7 @@ class AuthController {
     static async sendToken(req, res) {
         try {
             if (!req.user) {
-                res.redirect(`http://localhost:5173/singUp`);
+                res.redirect(`https://exclusive-shop-c0f66.web.app/singUp`);
             }
             const token = prepareToken(
                 {
@@ -81,9 +81,9 @@ class AuthController {
                 },
                 req.headers
             );
-            res.redirect(`http://localhost:5173/singUp?token=${token}`);
+            res.redirect(`https://exclusive-shop-c0f66.web.app/singUp?token=${token}`);
         } catch (error) {
-            res.redirect("http://localhost:5173/123213");
+            res.redirect("https://exclusive-shop-c0f66.web.app/123213");
         }
     }
     static async loginWithGoogle(req, res) {
